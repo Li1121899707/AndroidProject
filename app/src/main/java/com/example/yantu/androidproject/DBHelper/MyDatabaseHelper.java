@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREAT_HOBBY = "create table Hobby("+
             "hbId integer primary key autoincrement,"+"hbName text,"
-            +"hbTime text,hbCycle integer)";
+            +"hbTime text,hbCycle integer,hbImg text)";
     private static final String CREAT_LOG = "create table Log("+
             "lgId integer primary key autoincrement,"+" hbId integer,"+
             "lgTotal integer,lgContinue integer)";
