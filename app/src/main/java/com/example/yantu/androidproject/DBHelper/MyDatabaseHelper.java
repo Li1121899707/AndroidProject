@@ -1,5 +1,5 @@
 package com.example.yantu.androidproject.DBHelper;
-
+/*姚越*/
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
