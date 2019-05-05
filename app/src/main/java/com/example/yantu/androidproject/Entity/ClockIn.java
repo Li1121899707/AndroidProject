@@ -1,0 +1,33 @@
+package com.example.yantu.androidproject.Entity;
+
+public class ClockIn {
+    private Hobby hobby;
+    private int ciId;
+    private String ciDate;
+    public Hobby getHobby() {
+        return hobby;
+    }
+
+    public void setHobby(Hobby hobby) {
+        this.hobby = hobby;
+    }
+
+    public int getciId() {
+        return ciId;
+    }
+
+    public void setciId(int ciId) {
+        this.ciId = ciId;
+    }
+
+    public String getciDate() {
+        return ciDate;
+    }
+
+    public void setciDate(String ciDate) {
+        this.ciDate = ciDate;
+    }
+
+
+
+}
