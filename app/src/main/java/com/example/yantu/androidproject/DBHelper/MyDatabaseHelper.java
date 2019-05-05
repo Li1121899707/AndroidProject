@@ -5,15 +5,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
-    private static final String CREAT_HOBBY = "create table Hobby("+
+    private static final String CREATE_HOBBY = "create table Hobby("+
             "hbId integer primary key autoincrement,"+"hbName text,"
-            +"hbTime text,hbCycle integer,hbImg text)";
-    private static final String CREAT_LOG = "create table Log("+
+            +"hbTime text,hbCycle integer,icId integer)";
+    private static final String CREATE_LOG = "create table Log("+
             "lgId integer primary key autoincrement,"+" hbId integer,"+
             "lgTotal integer,lgContinue integer)";
-    private static final String CREAT_ClOCKIN = "create table Clockin("+
+    private static final String CREATE_ClOCKIN = "create table Clockin("+
             "ciId integer primary key autoincrement,"+" hbId integer,"+
             "ciDate text)";
+    private static final String CREATE_ICON = "create table Icon(" +
+            "icId integer primary key autoincrement, icPath text)";
     private Context mContext;
 
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -22,9 +24,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREAT_HOBBY);
-        db.execSQL(CREAT_LOG);
-        db.execSQL(CREAT_ClOCKIN);
+        db.execSQL(CREATE_HOBBY);
+        db.execSQL(CREATE_LOG);
+        db.execSQL(CREATE_ClOCKIN);
+        db.execSQL(CREATE_ICON);
     }
 
     @Override

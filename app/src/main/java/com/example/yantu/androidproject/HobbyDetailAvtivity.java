@@ -67,7 +67,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         //查询数据库读出相关的天数
         SQLiteDatabase db1 = dbHelper.getReadableDatabase();
         Cursor cursor = db1.query("Log",null,
-                "where=?",new String[]{String.valueOf(hobby.getHbId())},
+                "hbId=?",new String[]{String.valueOf(hobby.getHbId())},
                 null, null,null);
         if(cursor.moveToFirst()){
             do{
@@ -169,8 +169,18 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             dayViewFacade.addSpan(new ForegroundColorSpan(Color.RED));
         }
     }
+    //查询出所有的
     public void getAllDates(){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
+        Cursor cursor = db.query("Log",null,
+                "hbId=?",new String[]{String.valueOf(hobby.getHbId())},
+                null, null,null);
+        if(cursor.moveToFirst()){
+            do{
+                String date = cursor.getString(cursor.getColumnIndex("hbId"));
+                dates.add(date);
+            }while (cursor.moveToNext());
+            cursor.close();
+        }
     }
 }
