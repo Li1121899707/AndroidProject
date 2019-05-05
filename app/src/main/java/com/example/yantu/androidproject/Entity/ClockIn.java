@@ -12,19 +12,19 @@ public class ClockIn {
         this.hobby = hobby;
     }
 
-    public int getciId() {
+    public int getCiId() {
         return ciId;
     }
 
-    public void setciId(int ciId) {
+    public void setCiId(int ciId) {
         this.ciId = ciId;
     }
 
-    public String getciDate() {
+    public String getCiDate() {
         return ciDate;
     }
 
-    public void setciDate(String ciDate) {
+    public void setCiDate(String ciDate) {
         this.ciDate = ciDate;
     }
 

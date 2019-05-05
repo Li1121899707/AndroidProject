@@ -64,17 +64,17 @@
         android:text="打卡日志" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/total"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:textSize="20dp"
-        android:text="总共坚持   天" />
+        android:text="总共坚持   天"
+        android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/continueday"
         android:layout_width="match_parent"
         android:layout_height="53dp"
-        android:textSize="20dp"
-        android:text="连续坚持    天" />
+        android:text="连续坚持    天"
+        android:textSize="20dp" />
 
 </LinearLayout>

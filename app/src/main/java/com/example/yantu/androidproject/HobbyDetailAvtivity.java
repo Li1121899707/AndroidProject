@@ -1,15 +1,20 @@
 package com.example.yantu.androidproject;
 
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
 import com.example.yantu.androidproject.Entity.Hobby;
@@ -18,6 +23,7 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -29,6 +35,11 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     private ImageView edit;
     private MyDatabaseHelper dbHelper;
     private MaterialCalendarView materialCalendarView;
+    private Hobby hobby;
+    private int Total;
+    private int Continue;
+    private TextView totalday;
+    private TextView continueday;
     public void init(){
         back = findViewById(R.id.back);
         hobbies = findViewById(R.id.hobbies);
@@ -36,11 +47,14 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         edit = findViewById(R.id.edit);
         materialCalendarView = findViewById(R.id.calendarView);
         dbHelper = new MyDatabaseHelper(this,"yantu.db",null,1);
+        hobby = (Hobby)getIntent().getSerializableExtra("Hobby");
+        totalday = findViewById(R.id.total);
+        continueday = findViewById(R.id.continueday);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.hobby_detail_avtivity);
         //隐藏系统标题栏
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -48,20 +62,56 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         }
         init();
         //materialCalendarView.setSelectionColor(0xff4285f4);
-        Intent intent = getIntent();
-        Hobby hobby = new Hobby();
-        hobbies.setText(hobby.getHbName());
+        //hobbies.setText(hobby.getHbName());
         List<String> dates = new ArrayList<>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        SQLiteDatabase db1 = dbHelper.getReadableDatabase();
+        Cursor cursor = db1.query("Log",null,null,null,null,
+                null,null);
+        Total = cursor.getInt(cursor.getColumnIndex("lgTotal"));
+        Continue = cursor.getInt(cursor.getColumnIndex("lgContinue"));
+        String display_total = "总共签到" + String.valueOf(Total) + "天";
+        String display_continue = "连续签到" + String.valueOf(Continue) + "天";
+        totalday.setText(display_total);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(HobbyDetailAvtivity.this,"1111",Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(HobbyDetailAvtivity.this);
+                builder.setTitle("确认是否删除")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        try{
+                            db.delete("Hobby","hbId=?",new String[]{String.valueOf(hobby.getHbId())});
+                            db.delete("Log","hbId=?",new String[]{String.valueOf(hobby.getHbId())});
+                            db.delete("Clockin","hbId=?",new String[]{String.valueOf(hobby.getHbId())});
+                        }catch (Exception e){
+                            Toast.makeText(HobbyDetailAvtivity.this,"删除失败",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Toast.makeText(HobbyDetailAvtivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+
+                    }
+                }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Toast.makeText(HobbyDetailAvtivity.this,"1111",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                builder.create().show();
             }
         });
-        for(int i = 0;i < dates.size();i++){
-            android.util.Log.i("1", dates.get(i));
-        }
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(HobbyDetailAvtivity.this,EditHobbyActivity.class);
+                intent1.putExtra("Hobby", hobby);
+                startActivity(intent1);
+            }
+        });
         materialCalendarView.addDecorators(new EventDecorator(dates),new SameDayDecorator());
     }
     //给打卡过的日期进行标记
@@ -99,14 +149,12 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             String parse = year + "-" + month + "-" + day;
             //android.util.Log.i("1", String.valueOf(calendarDay.getDate()));
             //android.util.Log.i("1",parse);
-
             if (String.valueOf(calendarDay.getDate()).equals(parse)) {
                 //android.util.Log.i("1","正确");
                 return true;
             }
             return false;
         }
-
         @Override
         public void decorate(DayViewFacade dayViewFacade) {
             dayViewFacade.addSpan(new ForegroundColorSpan(Color.RED));

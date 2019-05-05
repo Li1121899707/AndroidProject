@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREAT_HOBBY = "create table Hobby("+
             "hbId integer primary key autoincrement,"+"hbName text,"
-            +"hbTime integer,hbCycle text)";
+            +"hbTime text,hbCycle integer)";
     private static final String CREAT_LOG = "create table Log("+
-            "lgId integer primary key autoincrement,"+" hobby Hobby,"+
+            "lgId integer primary key autoincrement,"+" hbId integer,"+
             "lgTotal integer,lgContinue integer)";
-    private static final String CREAT_SIGNIN = "create table Signin("+
-            "siId integer primary key autoincrement,"+" hobby Hobby,"+
+    private static final String CREAT_ClOCKIN = "create table Clockin("+
+            "siId integer primary key autoincrement,"+" hbId integer,"+
             "siDate text)";
     private Context mContext;
 
@@ -24,7 +24,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREAT_HOBBY);
         db.execSQL(CREAT_LOG);
-        db.execSQL(CREAT_SIGNIN);
+        db.execSQL(CREAT_ClOCKIN);
     }
 
     @Override
