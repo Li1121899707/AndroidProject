@@ -40,6 +40,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     private int Continue;
     private TextView totalday;
     private TextView continueday;
+    private ArrayList<String> dates;
     public void init(){
         back = findViewById(R.id.back);
         hobbies = findViewById(R.id.hobbies);
@@ -63,15 +64,23 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         init();
         //materialCalendarView.setSelectionColor(0xff4285f4);
         //hobbies.setText(hobby.getHbName());
-        List<String> dates = new ArrayList<>();
+        //查询数据库读出相关的天数
         SQLiteDatabase db1 = dbHelper.getReadableDatabase();
-        Cursor cursor = db1.query("Log",null,null,null,null,
-                null,null);
-        Total = cursor.getInt(cursor.getColumnIndex("lgTotal"));
-        Continue = cursor.getInt(cursor.getColumnIndex("lgContinue"));
+        Cursor cursor = db1.query("Log",null,
+                "where=?",new String[]{String.valueOf(hobby.getHbId())},
+                null, null,null);
+        if(cursor.moveToFirst()){
+            do{
+                Total = cursor.getInt(cursor.getColumnIndex("lgTotal"));
+                Continue = cursor.getInt(cursor.getColumnIndex("lgContinue"));
+            }while (cursor.moveToNext());
+            cursor.close();
+        }
         String display_total = "总共签到" + String.valueOf(Total) + "天";
         String display_continue = "连续签到" + String.valueOf(Continue) + "天";
         totalday.setText(display_total);
+        continueday.setText(display_continue);
+
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,5 +168,9 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         public void decorate(DayViewFacade dayViewFacade) {
             dayViewFacade.addSpan(new ForegroundColorSpan(Color.RED));
         }
+    }
+    public void getAllDates(){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
     }
 }
