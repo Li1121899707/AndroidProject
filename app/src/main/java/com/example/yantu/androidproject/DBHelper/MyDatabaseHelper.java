@@ -12,8 +12,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "lgId integer primary key autoincrement,"+" hbId integer,"+
             "lgTotal integer,lgContinue integer)";
     private static final String CREAT_ClOCKIN = "create table Clockin("+
-            "siId integer primary key autoincrement,"+" hbId integer,"+
-            "siDate text)";
+            "ciId integer primary key autoincrement,"+" hbId integer,"+
+            "ciDate text)";
     private Context mContext;
 
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
