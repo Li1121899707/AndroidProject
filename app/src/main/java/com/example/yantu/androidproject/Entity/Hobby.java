@@ -3,7 +3,7 @@ package com.example.yantu.androidproject.Entity;
 import java.io.Serializable;
 
 public class Hobby implements Serializable {
-    
+
     private int hbId;
     private String hbName;
     private String hbTime;
