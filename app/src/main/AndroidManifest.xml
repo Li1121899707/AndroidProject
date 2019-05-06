@@ -19,7 +19,8 @@
         <activity android:name=".EditHobbyActivity" />
         <activity
             android:name=".TodayHobbyActivity"
-            android:label="@string/title_activity_today_hobby"></activity>
+            android:label="@string/title_activity_today_hobby" />
+        <activity android:name=".DailyHobbyActivity"></activity>
     </application>
 
 </manifest>
