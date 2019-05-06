@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditHobbyActivity" />
+        <activity android:name=".DailyHobbyActivity" />
         <activity
             android:name=".HobbyDetailAvtivity"
             android:label="@string/title_activity_today_hobby"></activity>
