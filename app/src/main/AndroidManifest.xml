@@ -21,6 +21,7 @@
         <activity
             android:name=".HobbyDetailAvtivity"
             android:label="@string/title_activity_today_hobby"></activity>
+        <activity android:name=".DailyHobbyActivity" />
     </application>
 
 </manifest>

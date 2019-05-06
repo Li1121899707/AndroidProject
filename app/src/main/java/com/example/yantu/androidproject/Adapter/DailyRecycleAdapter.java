@@ -46,7 +46,5 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
             textView = itemView.findViewById(R.id.tvRecycleItem);
         }
     }
-
-
 }
 
