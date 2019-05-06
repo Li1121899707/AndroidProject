@@ -38,13 +38,13 @@
 
             android:text="" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="31dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="10dp"
-            app:srcCompat="@drawable/set" />
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView"-->
+            <!--android:layout_width="31dp"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--app:srcCompat="@drawable/set" />-->
 
     </LinearLayout>
 
@@ -68,7 +68,7 @@
             android:paddingTop="10dp">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/lastDay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="考研倒计时 100 天"
@@ -107,7 +107,7 @@
                     android:background="#14277de7">
 
 
-                    <HorizontalListView
+                    <android.support.v7.widget.RecyclerView
                         android:id="@+id/morningList"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
