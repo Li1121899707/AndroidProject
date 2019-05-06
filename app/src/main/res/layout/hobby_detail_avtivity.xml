@@ -17,7 +17,7 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            
             app:srcCompat="@drawable/back" />
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_width="274dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            
             android:gravity="center"
             android:text="背单词"
             android:textColor="#aea727"
@@ -36,7 +36,7 @@
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            
             app:srcCompat="@drawable/delete" />
 
         <ImageView
@@ -44,7 +44,7 @@
             android:layout_width="63dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+
             app:srcCompat="@drawable/iconfont_input" />
     </LinearLayout>
 
@@ -67,7 +67,7 @@
         android:id="@+id/total"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="总共坚持   天"
+        android:text="总共坚持    天"
         android:textSize="20dp" />
 
     <TextView
