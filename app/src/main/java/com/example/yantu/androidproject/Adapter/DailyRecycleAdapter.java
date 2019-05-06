@@ -25,7 +25,6 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
 
     @Override
     public DailyRecycleAdapter.LinearViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-
         return new LinearViewHolder(mLayoutInflater.inflate(R.layout.item_recycle_daily,viewGroup,false));
     }
 
@@ -46,6 +45,4 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
             textView = itemView.findViewById(R.id.tvRecycleItem);
         }
     }
-
-
 }
