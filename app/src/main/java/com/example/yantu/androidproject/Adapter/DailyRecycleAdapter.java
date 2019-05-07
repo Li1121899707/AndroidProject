@@ -69,22 +69,22 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
 
     @Override
     public void onBindViewHolder(DailyRecycleAdapter.LinearViewHolder viewHolder, int i) {
-        for (Map<String, String> m : list)
-        {
-            if (m.containsKey("id"))
-            {
-
-            }
-        }
-        viewHolder.itemView.setId(values.getAsInteger("id"));
-        viewHolder.textView.setText(values.getAsString("name") + " " + values.getAsString("time"));
-        //此处直接将数字转为字符串，可能出错
-        viewHolder.button.setId(values.getAsInteger("id"));
-        viewHolder.button.setText(values.getAsInteger("cycle"));
-        if (viewHolder.button.getText().equals("0"))
-        {
-            viewHolder.button.setEnabled(false);
-        }
+//        for (Map<String, String> m : list)
+//        {
+//            if (m.containsKey("id"))
+//            {
+//
+//            }
+//        }
+//        viewHolder.itemView.setId(values.getAsInteger("id"));
+//        viewHolder.textView.setText(values.getAsString("name") + " " + values.getAsString("time"));
+//        //此处直接将数字转为字符串，可能出错
+//        viewHolder.button.setId(values.getAsInteger("id"));
+//        viewHolder.button.setText(values.getAsInteger("cycle"));
+//        if (viewHolder.button.getText().equals("0"))
+//        {
+//            viewHolder.button.setEnabled(false);
+//        }
         viewHolder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
