@@ -5,6 +5,8 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainBlue"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".TodayHobbyActivity">
 
@@ -14,37 +16,15 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_gravity="center"
-        android:background="#94a7c5e2"
+        android:gravity="center"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="156dp"
-            android:layout_height="wrap_content"
-            android:text="" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="Today"
             android:textSize="22dp" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="131dp"
-            android:layout_height="wrap_content"
-
-            android:text="" />
-
-        <!--<ImageView-->
-            <!--android:id="@+id/imageView"-->
-            <!--android:layout_width="31dp"-->
-            <!--android:layout_height="32dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--app:srcCompat="@drawable/set" />-->
 
     </LinearLayout>
 
@@ -54,9 +34,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/navigation"
         android:layout_below="@+id/topbar"
-
-
-
+        android:background="@color/white"
         android:orientation="vertical">
 
         <LinearLayout
@@ -72,9 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="考研倒计时 100 天"
-
                 android:textSize="19dp" />
-
 
         </LinearLayout>
 
@@ -103,8 +79,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:background="#14277de7">
+                    android:background="#14277de7"
+                    android:orientation="horizontal">
 
 
                     <android.support.v7.widget.RecyclerView
@@ -134,8 +110,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:background="#144e91e4">
+                    android:background="#144e91e4"
+                    android:orientation="horizontal">
 
                 </LinearLayout>
             </LinearLayout>
@@ -160,8 +136,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:background="#2872a5e4">
+                    android:background="#2872a5e4"
+                    android:orientation="horizontal">
 
                 </LinearLayout>
             </LinearLayout>
@@ -185,8 +161,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:background="#327ea2da">
+                    android:background="#327ea2da"
+                    android:orientation="horizontal">
 
                 </LinearLayout>
             </LinearLayout>
@@ -196,20 +172,18 @@
     </LinearLayout>
 
 
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="#94a7c5e2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
 
-
-<android.support.design.widget.BottomNavigationView
-android:id="@+id/navigation"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginStart="0dp"
-android:layout_marginEnd="0dp"
-android:background="#94a7c5e2"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintLeft_toLeftOf="parent"
-app:layout_constraintRight_toRightOf="parent"
-android:layout_gravity="bottom"
-app:menu="@menu/navigation"
-android:layout_alignParentBottom="true" />
-
-    </RelativeLayout>
+</RelativeLayout>

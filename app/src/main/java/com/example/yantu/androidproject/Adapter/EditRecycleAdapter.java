@@ -1,29 +1,23 @@
 package com.example.yantu.androidproject.Adapter;
 /*李洋*/
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.yantu.androidproject.R;
 
 import java.util.List;
-import java.util.Map;
 
 public class EditRecycleAdapter extends RecyclerView.Adapter <EditRecycleAdapter.LinearViewHolder>{
     //声明引用
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private List<String> mDatas = null;
-    private String beginPath = "android.resource://com.example.yantu.androidproject/drawable/";
+    private List<String> mDatas;
     private OnItemClickListener mOnItemClickListener = null;
 
     //创建一个构造函数
@@ -42,6 +36,8 @@ public class EditRecycleAdapter extends RecyclerView.Adapter <EditRecycleAdapter
     @Override
     public void onBindViewHolder(final EditRecycleAdapter.LinearViewHolder holder, final int position) {
         String iconPath = mDatas.get(position);
+        String beginPath = "android.resource://com.example.yantu.androidproject/drawable/";
+
         Log.i("result", beginPath + iconPath);
         holder.imageView.setImageURI(Uri.parse(beginPath + iconPath));
 
@@ -65,9 +61,9 @@ public class EditRecycleAdapter extends RecyclerView.Adapter <EditRecycleAdapter
         //声明layout_linearrv_item布局控件的变量
         private ImageView imageView;
 
-        public LinearViewHolder(View itemView) {
+        LinearViewHolder(View itemView) {
             super(itemView);
-            imageView=(ImageView) itemView.findViewById(R.id.editIcon);
+            imageView = itemView.findViewById(R.id.editIcon);
         }
     }
 

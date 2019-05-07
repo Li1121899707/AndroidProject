@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yantu.androidproject.Adapter.HorLinearAdapter;
+import com.example.yantu.androidproject.Util.Utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -107,10 +108,12 @@ public class TodayHobbyActivity extends AppCompatActivity {
         setContentView(R.layout.today_hobby_activity);
 
         //隐藏系统标题栏
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.hide();
+//        }
+
+        Utils.setStatusBar(this, false, false);
         ///////////////////////////////////////////////////////////////////////////////////////////////////获取倒计时
         Calendar calendar = Calendar.getInstance();                   //获取系统的日期
         //年
