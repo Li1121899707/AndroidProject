@@ -94,7 +94,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         delete = findViewById(R.id.delete);
         edit = findViewById(R.id.edit);
         totalday = findViewById(R.id.total);
-        btnDetailBack = findViewById(R.id.btnEditBack);
+        btnDetailBack = findViewById(R.id.btnDetailBack);
         continueday = findViewById(R.id.continueday);
         materialCalendarView = findViewById(R.id.calendarView);
         dbHelper = new MyDatabaseHelper(this, "yantu.db", null, 1);
@@ -113,14 +113,14 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         Utils.setStatusBar(this, false, false);
 
         init();
-        //addData();
+        addData();
         getTotalAndContinue();
         getAllDates();
         Log.i("2", String.valueOf(dates.size()));
         for (int i = 0; i < dates.size(); i++) {
             Log.i("2", dates.get(i));
         }
-        //materialCalendarView.setSelectionColor(0xff4285f4);
+        materialCalendarView.setSelectionColor(0xff4285f4);
         //hobbies.setText(hobby.getHbName());
         //查询数据库读出相关的天数
 
@@ -216,11 +216,10 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         totalday.setText(display_total);
         continueday.setText(display_continue);
     }
-
+    //查询是否删除
     public View.OnClickListener deletelistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(HobbyDetailAvtivity.this, "1111", Toast.LENGTH_SHORT).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(HobbyDetailAvtivity.this);
             builder.setTitle("是否删除习惯");
             builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -247,6 +246,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             builder.create().show();
         }
     };
+    //向习惯编辑页面跳转
     public View.OnClickListener editlistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -256,19 +256,22 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             startActivity(intent1);
         }
     };
+    //今天设置红色圆环背景
     class CircleBackGroundSpan implements LineBackgroundSpan {
 
         @Override
         public void drawBackground(Canvas c, Paint p, int left, int right, int top, int baseline, int bottom, CharSequence text, int start, int end, int lnum) {
             Paint paint = new Paint();
-            //paint.setColor(Color.parseColor("#def0ef"));
-            paint.setColor(Color.YELLOW);
-            c.drawCircle((right - left) / 2, (bottom - top) / 2 + dip2px(HobbyDetailAvtivity.this,4), dip2px(HobbyDetailAvtivity.this,18), paint);
-//            c.save();
-//            c.drawColor(Color.YELLOW);
-//            c.restore();
+            paint.setAntiAlias(true); //消除锯齿
+            paint.setStyle(Paint.Style.STROKE);//绘制空心圆或 空心矩形
+            int ringWidth = dip2px(HobbyDetailAvtivity.this,1);//圆环宽度
+            //绘制圆环
+            paint.setColor(Color.parseColor("#FF3D62"));
+            paint.setStrokeWidth(ringWidth);
+            c.drawCircle((right - left) / 2, (bottom - top) / 2 , dip2px(HobbyDetailAvtivity.this,18), paint);
         }
     }
+    //打卡过的天设置淡蓝色圆环背景
     class AnnulusSpan implements LineBackgroundSpan {
         @Override
         public void drawBackground(Canvas c, Paint p, int left, int right, int top, int baseline, int bottom, CharSequence text, int start, int end, int lnum) {
@@ -279,14 +282,15 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             //绘制圆环
             paint.setColor(Color.parseColor("#00bcbe"));
             paint.setStrokeWidth(ringWidth);
-            c.drawCircle((right - left) / 2, (bottom - top) / 2 + dip2px(HobbyDetailAvtivity.this,4), dip2px(HobbyDetailAvtivity.this,18), paint);
+            c.drawCircle((right - left) / 2, (bottom - top) / 2 , dip2px(HobbyDetailAvtivity.this,18), paint);
         }
     }
-
+    //向前一页面跳转
     public View.OnClickListener backListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            Intent intent = new Intent(HobbyDetailAvtivity.this,EditHobbyActivity.class);
+            startActivity(intent);
         }
     };
 }
