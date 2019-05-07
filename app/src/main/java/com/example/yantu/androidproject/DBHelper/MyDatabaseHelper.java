@@ -7,15 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_HOBBY = "create table Hobby("+
             "hbId integer primary key autoincrement,"+"hbName text,"
-            +"hbTime text,hbCycle integer,icId integer)";
+            +"hbTime text,hbCycle integer,hbIcon text)";
     private static final String CREATE_LOG = "create table Log("+
             "lgId integer primary key autoincrement,"+" hbId integer,"+
             "lgTotal integer,lgContinue integer)";
     private static final String CREATE_ClOCKIN = "create table Clockin("+
             "ciId integer primary key autoincrement,"+" hbId integer,"+
             "ciDate text)";
-    private static final String CREATE_ICON = "create table Icon(" +
-            "icId integer primary key autoincrement, icPath text)";
     private Context mContext;
 
     public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -27,7 +25,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_HOBBY);
         db.execSQL(CREATE_LOG);
         db.execSQL(CREATE_ClOCKIN);
-        db.execSQL(CREATE_ICON);
     }
 
     @Override
