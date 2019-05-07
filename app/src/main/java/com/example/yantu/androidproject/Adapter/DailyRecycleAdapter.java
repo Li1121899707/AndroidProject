@@ -45,21 +45,21 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
         dbHelper.getWritableDatabase();
         db = dbHelper.getWritableDatabase();
         list = new ArrayList<>();
-        Cursor c = db.rawQuery("select * from yantu",null);
-        if (c != null)
-        {
-            Map<String, String> map = new HashMap<>();
-            String s = "";
-            while (c.moveToNext()){
-                map.put("id", s.valueOf(c.getInt(c.getColumnIndex("hbId"))));
-                map.put("name", c.getString(c.getColumnIndex("hbName")));
-                map.put("time", c.getString(c.getColumnIndex("hbTime")));
-                map.put("cycle", s.valueOf(c.getInt(c.getColumnIndex("hbCycle"))));
-                list.add(map);
-            }
-        }
-        c.close();
-        db.close();
+//        Cursor c = db.rawQuery("select * from yantu",null);
+//        if (c != null)
+//        {
+//            Map<String, String> map = new HashMap<>();
+//            String s = "";
+//            while (c.moveToNext()){
+//                map.put("id", s.valueOf(c.getInt(c.getColumnIndex("hbId"))));
+//                map.put("name", c.getString(c.getColumnIndex("hbName")));
+//                map.put("time", c.getString(c.getColumnIndex("hbTime")));
+//                map.put("cycle", s.valueOf(c.getInt(c.getColumnIndex("hbCycle"))));
+//                list.add(map);
+//            }
+//        }
+//        c.close();
+//        db.close();
     }
 
     @Override
