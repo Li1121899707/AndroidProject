@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#aaffaa">
+    android:layout_height="wrap_content" android:gravity="center">
 
     <TextView
         android:id="@+id/tvRecycleItem"
-        android:layout_width="match_parent"
+        android:background="@color/pink"
+        android:gravity="center|left"
+        android:paddingLeft="15dp"
+        android:layout_weight="4"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:text="日常习惯"/>
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:text="Tomato"/>
 
 </LinearLayout>
