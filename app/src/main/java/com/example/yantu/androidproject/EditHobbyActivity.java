@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +43,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
     private EditText etHobbyCycle;
     private Button btnEditHobby;
     private Button btnResetHobby;
+    private ImageView btnEditBack;
     private int spinnerPosition = 0;
     private TextView tvHobbyTitle;
     private MyDatabaseHelper dbHelper;
@@ -81,6 +84,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
         btnResetHobby = findViewById(R.id.btnResetHobby);
         tvHobbyTitle = findViewById(R.id.tvHobbyTitle);
         recyclerView = findViewById(R.id.editIconList);
+        btnEditBack = findViewById(R.id.btnEditBack);
 
         // 动态改变标题
         if(choice.equals("edit")){
@@ -94,6 +98,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
         // button
         btnEditHobby.setOnClickListener(editListener);
         btnResetHobby.setOnClickListener(resetListener);
+        btnEditBack.setOnClickListener(backListener);
 
         // Spinner
         ArrayAdapter<String > spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems);
@@ -233,6 +238,14 @@ public class EditHobbyActivity extends AppCompatActivity implements
         //动画效果(仅限于添加删除)
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
+
+    private View.OnClickListener backListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(EditHobbyActivity.this, TodayHobbyActivity.class);
+            startActivity(intent);
+        }
+    };
 
     @Override
     public void onClick(View parent, int position) {

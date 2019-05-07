@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
 import com.example.yantu.androidproject.Entity.Hobby;
+import com.example.yantu.androidproject.Util.Utils;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -38,6 +39,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     private ImageView delete;
     private TextView hobbies;
     private ImageView edit;
+    private ImageView btnDetailBack;
     private MyDatabaseHelper dbHelper;
     private MaterialCalendarView materialCalendarView;
     private Hobby hobby;
@@ -46,6 +48,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     private TextView totalday;
     private TextView continueday;
     private ArrayList<String> dates;
+    private Intent intent;
     public static int dip2px(Context context, float dpValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
@@ -91,6 +94,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         delete = findViewById(R.id.delete);
         edit = findViewById(R.id.edit);
         totalday = findViewById(R.id.total);
+        btnDetailBack = findViewById(R.id.btnEditBack);
         continueday = findViewById(R.id.continueday);
         materialCalendarView = findViewById(R.id.calendarView);
         dbHelper = new MyDatabaseHelper(this, "yantu.db", null, 1);
@@ -98,17 +102,16 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         hobby = new Hobby();
         hobby.setHbId(1);
         dates = new ArrayList<>();
+
+        btnDetailBack.setOnClickListener(backListener);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hobby_detail_avtivity);
-        //隐藏系统标题栏
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
+        Utils.setStatusBar(this, false, false);
+
         init();
         //addData();
         getTotalAndContinue();
@@ -279,4 +282,11 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             c.drawCircle((right - left) / 2, (bottom - top) / 2 + dip2px(HobbyDetailAvtivity.this,4), dip2px(HobbyDetailAvtivity.this,18), paint);
         }
     }
+
+    public View.OnClickListener backListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 }
