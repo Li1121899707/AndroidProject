@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
 import com.example.yantu.androidproject.DailyHobbyActivity;
+import com.example.yantu.androidproject.HobbyDetailAvtivity;
 import com.example.yantu.androidproject.R;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
 
     // 创建数据库并查询所需数据
     public void createDatabase(){
-        dbHelper = new MyDatabaseHelper(mContext, "yantu.db", null, 1);
+        dbHelper = new MyDatabaseHelper((HobbyDetailAvtivity) mContext, "yantu.db", null, 1);
         dbHelper.getWritableDatabase();
         db = dbHelper.getWritableDatabase();
         list = new ArrayList<>();

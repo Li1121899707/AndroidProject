@@ -101,7 +101,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
 
     // 创建数据库
     public void createDatabase() {
-        dbHelper = new MyDatabaseHelper(this, "yantu.db", null, 1);
+        dbHelper = new MyDatabaseHelper(EditHobbyActivity.this, "yantu.db", null, 1);
         dbHelper.getWritableDatabase();
     }
 

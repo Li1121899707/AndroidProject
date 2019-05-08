@@ -113,6 +113,10 @@
                     android:background="#144e91e4"
                     android:orientation="horizontal">
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/noonList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -139,6 +143,10 @@
                     android:background="#2872a5e4"
                     android:orientation="horizontal">
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/eveningList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -164,6 +172,10 @@
                     android:background="#327ea2da"
                     android:orientation="horizontal">
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/otherList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
             </LinearLayout>
 
