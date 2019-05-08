@@ -159,10 +159,10 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             String year = String.valueOf(calendar.get(Calendar.YEAR));
             String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
             String day = String.valueOf(calendar.get(Calendar.DATE));
-            if (Calendar.MONTH + 1 < 10) {
+            if (calendar.get(Calendar.MONTH) + 1 < 10) {
                 month = "0" + month;
             }
-            if (Calendar.DATE < 10) {
+            if (calendar.get(Calendar.DATE) < 10) {
                 day = "0" + day;
             }
             String parse = year + "-" + month + "-" + day;
