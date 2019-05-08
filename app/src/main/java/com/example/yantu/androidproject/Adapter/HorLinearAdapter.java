@@ -46,6 +46,8 @@ public class HorLinearAdapter extends RecyclerView.Adapter<HorLinearAdapter.Line
         String funcIcon = map.get("img").toString();
         holder.imageView.setImageURI(Uri.parse(beginPath + funcIcon));
         holder.textView.setText(funcName);
+
+
         //Glide.with(mContext).load("http://img.zcool.cn/community/01c8b4557aca590000002d5c60d85e.jpg@1280w_1l_2o_100sh.jpg").into(holder.imageView);
 
     }

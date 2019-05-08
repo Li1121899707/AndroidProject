@@ -41,6 +41,7 @@ public class TodayHobbyActivity extends AppCompatActivity {
     //private TextView mTextMessage;
     TextView lastDay;
     MyDatabaseHelper dbHelper;
+    Boolean up = false;//默认false不刷新
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -57,7 +58,7 @@ public class TodayHobbyActivity extends AppCompatActivity {
                     //mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_notifications:
-                    Intent intent1 = new Intent(TodayHobbyActivity.this,EditHobbyActivity.class);
+                    Intent intent1 = new Intent(TodayHobbyActivity.this, EditHobbyActivity.class);
                     startActivity(intent1);
                     //mTextMessage.setText(R.string.title_notifications);
                     return true;
@@ -147,10 +148,10 @@ public class TodayHobbyActivity extends AppCompatActivity {
         //Toast.makeText(TodayHobbyActivity.this, "" + daynumber, Toast.LENGTH_LONG).show();
 
         //////////////////////////////////////////////////////////////////////////////////////////////////读取功能
-        final List<Map<String,Object>> funclist1 = new ArrayList<Map<String,Object>>();
-        final List<Map<String,Object>> funclist2 = new ArrayList<Map<String,Object>>();
-        final List<Map<String,Object>> funclist3 = new ArrayList<Map<String,Object>>();
-        final List<Map<String,Object>> funclist4 = new ArrayList<Map<String,Object>>();
+        final List<Map<String, Object>> funclist1 = new ArrayList<Map<String, Object>>();
+        final List<Map<String, Object>> funclist2 = new ArrayList<Map<String, Object>>();
+        final List<Map<String, Object>> funclist3 = new ArrayList<Map<String, Object>>();
+        final List<Map<String, Object>> funclist4 = new ArrayList<Map<String, Object>>();
         dbHelper = new MyDatabaseHelper(TodayHobbyActivity.this, "yantu.db", null, 1);
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query("Hobby", null, null, null, null, null, null);
@@ -159,22 +160,22 @@ public class TodayHobbyActivity extends AppCompatActivity {
                 String hbName = cursor.getString(cursor.getColumnIndex("hbName"));
                 String hbIcon = cursor.getString(cursor.getColumnIndex("hbIcon"));
                 String hbTime = cursor.getString(cursor.getColumnIndex("hbTime"));
-                Map<String,Object> map = new HashMap<String,Object>();
-                if(hbTime.equals("早上习惯")){
-                    map.put("img",hbIcon);
-                    map.put("name",hbName);
+                Map<String, Object> map = new HashMap<String, Object>();
+                if (hbTime.equals("1")) {
+                    map.put("img", hbIcon);
+                    map.put("name", hbName);
                     funclist1.add(map);
-                }else if(hbTime.equals("下午习惯")){
-                    map.put("img",hbIcon);
-                    map.put("name",hbName);
+                } else if (hbTime.equals("2")) {
+                    map.put("img", hbIcon);
+                    map.put("name", hbName);
                     funclist2.add(map);
-                }else if(hbTime.equals("晚间习惯")){
-                    map.put("img",hbIcon);
-                    map.put("name",hbName);
+                } else if (hbTime.equals("3")) {
+                    map.put("img", hbIcon);
+                    map.put("name", hbName);
                     funclist3.add(map);
-                }else if(hbTime.equals("任意时间")){
-                    map.put("img",hbIcon);
-                    map.put("name",hbName);
+                } else if (hbTime.equals("0")) {
+                    map.put("img", hbIcon);
+                    map.put("name", hbName);
                     funclist4.add(map);
                 }
 
@@ -205,13 +206,30 @@ public class TodayHobbyActivity extends AppCompatActivity {
         mhorRV4.setLayoutManager(linearLayoutManager4);
         //设置适配器：Adapter
         //mhorRV1.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this));
-        mhorRV1.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this,funclist1));
-        mhorRV2.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this,funclist2));
-        mhorRV3.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this,funclist3));
-        mhorRV4.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this,funclist4));
-        android.util.Log.i("result1","finish");
+        mhorRV1.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this, funclist1));
+        mhorRV2.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this, funclist2));
+        mhorRV3.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this, funclist3));
+        mhorRV4.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this, funclist4));
+        android.util.Log.i("result1", "finish");
         ////////////////////////////////////////////////////////////////////////////////////////////////底部栏点击操作
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        up = true;//不可见的时候将刷新开启
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (up) {
+            //（方法）;//向服务器发送请求
+            up = false;//刷新一次即可，不需要一直刷新
+        }
+    }
+
 }
