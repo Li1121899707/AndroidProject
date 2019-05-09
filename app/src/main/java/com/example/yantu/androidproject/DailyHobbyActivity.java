@@ -16,6 +16,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.yantu.androidproject.Adapter.DailyRecycleAdapter;
@@ -30,6 +31,7 @@ import java.util.Map;
 
 public class DailyHobbyActivity extends AppCompatActivity implements DailyRecycleAdapter.DailyOnItemClickListener{
 
+    private ImageView addHobby;
     private RecyclerView rvDaily;
     private MyDatabaseHelper dbHelper;
     private List<Hobby> hobbyList;
@@ -49,11 +51,14 @@ public class DailyHobbyActivity extends AppCompatActivity implements DailyRecycl
         // 初始化控件
         rvDaily = findViewById(R.id.rvDaily);
         hobbyList = new ArrayList<>();
+        addHobby = findViewById(R.id.addHobby);
 
         // 底部导航栏注册监听事件（需合并，拆分为fragment）
         BottomNavigationView navigation = findViewById(R.id.navigationDailly);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_dashboard);
+
+        addHobby.setOnClickListener(addHobbyListener);
 
         createDatabase();
         queryAllFromHobby();
@@ -121,7 +126,7 @@ public class DailyHobbyActivity extends AppCompatActivity implements DailyRecycl
                     //mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_notifications:
-                    Intent intent1 = new Intent(DailyHobbyActivity.this, EditHobbyActivity.class);
+                    Intent intent1 = new Intent(DailyHobbyActivity.this, SettingActivity.class);
                     startActivity(intent1);
                     //mTextMessage.setText(R.string.title_notifications);
                     return true;
@@ -160,4 +165,13 @@ public class DailyHobbyActivity extends AppCompatActivity implements DailyRecycl
             up = false;//刷新一次即可，不需要一直刷新
         }
     }
+
+    public View.OnClickListener addHobbyListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(DailyHobbyActivity.this, EditHobbyActivity.class);
+            intent.putExtra("choice","insert");
+            startActivity(intent);
+        }
+    };
 }

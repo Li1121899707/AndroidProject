@@ -18,10 +18,15 @@
         </activity>
         <activity android:name=".EditHobbyActivity" />
         <activity android:name=".DailyHobbyActivity" />
-        <activity
-            android:name=".HobbyDetailAvtivity"
-            android:label="@string/title_activity_today_hobby"></activity>
+        <activity android:name=".HobbyDetailAvtivity"></activity>
 
+        <receiver android:name=".Broadcast.AlarmReceiver">
+            <intent-filter>
+                <action android:name="intent_alarm_log" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

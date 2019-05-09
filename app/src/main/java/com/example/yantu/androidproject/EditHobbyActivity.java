@@ -33,6 +33,7 @@ import java.util.List;
 public class EditHobbyActivity extends AppCompatActivity implements
         EditRecycleAdapter.OnItemClickListener {
 
+
     private EditText etHobbyName;
     private EditText etHobbyCycle;
     private ImageView selectedIcon;
@@ -256,13 +257,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
     private View.OnClickListener backListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(choice.equals("insert")){
-                Intent intent = new Intent(EditHobbyActivity.this, TodayHobbyActivity.class);
-                startActivity(intent);
-            }
-            else if(choice.equals("update")){
-                finish();
-            }
+            finish();
         }
     };
 

@@ -14,25 +14,14 @@
         android:layout_height="49dp"
         android:gravity="center"
         android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="match_parent" />
         <TextView
             android:id="@+id/hobbies"
             android:layout_width="274dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Daily"
+            android:text="Settings"
             android:textSize="22dp" />
-
-        <ImageView
-            android:id="@+id/addHobby"
-            android:src="@drawable/back"
-            android:layout_width="40dp"
-            android:layout_height="match_parent" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -40,15 +29,39 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/dailyLayoutTop"
         android:background="@color/white">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvDaily"
+
+
+        <LinearLayout
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="是否开启通知"
+                    android:textSize="16dp" />
+
+                <Switch
+                    android:id="@+id/notiSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigationDailly"
+        android:id="@+id/navigationSetting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

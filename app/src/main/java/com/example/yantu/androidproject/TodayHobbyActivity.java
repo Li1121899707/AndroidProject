@@ -58,7 +58,7 @@ public class TodayHobbyActivity extends AppCompatActivity {
                     //mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_notifications:
-                    Intent intent1 = new Intent(TodayHobbyActivity.this, EditHobbyActivity.class);
+                    Intent intent1 = new Intent(TodayHobbyActivity.this, SettingActivity.class);
                     startActivity(intent1);
                     //mTextMessage.setText(R.string.title_notifications);
                     return true;

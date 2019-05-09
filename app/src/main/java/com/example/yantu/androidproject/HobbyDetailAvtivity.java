@@ -107,7 +107,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         Utils.setStatusBar(this, false, false);
 
         init();
-        addData();
+        //addData();
         getTotalAndContinue();
         getAllDates();
         Log.i("2", String.valueOf(dates.size()));
