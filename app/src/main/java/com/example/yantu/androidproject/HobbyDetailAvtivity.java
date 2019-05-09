@@ -35,9 +35,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class HobbyDetailAvtivity extends AppCompatActivity {
-    private ImageView back;
     private ImageView delete;
-    private TextView hobbies;
     private ImageView edit;
     private ImageView btnDetailBack;
     private MyDatabaseHelper dbHelper;
@@ -48,7 +46,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     private TextView totalday;
     private TextView continueday;
     private ArrayList<String> dates;
-    private Intent intent;
+
     public static int dip2px(Context context, float dpValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
@@ -89,8 +87,6 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     /*************************************************/
     //初始化控件
     public void init() {
-        back = findViewById(R.id.back);
-        hobbies = findViewById(R.id.hobbies);
         delete = findViewById(R.id.delete);
         edit = findViewById(R.id.edit);
         totalday = findViewById(R.id.total);
@@ -98,9 +94,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         continueday = findViewById(R.id.continueday);
         materialCalendarView = findViewById(R.id.calendarView);
         dbHelper = new MyDatabaseHelper(this, "yantu.db", null, 1);
-        //hobby = (Hobby)getIntent().getSerializableExtra("Hobby");
-        hobby = new Hobby();
-        hobby.setHbId(1);
+        hobby = (Hobby)getIntent().getSerializableExtra("Hobby");
         dates = new ArrayList<>();
 
         btnDetailBack.setOnClickListener(backListener);
@@ -197,7 +191,8 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             cursor.close();
         }
     }
-//从数据库中获取当前习惯的总共打卡天数和坚持天数
+
+    //从数据库中获取当前习惯的总共打卡天数和坚持天数
     public void getTotalAndContinue() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query("Log", null,
@@ -216,6 +211,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         totalday.setText(display_total);
         continueday.setText(display_continue);
     }
+
     //查询是否删除
     public View.OnClickListener deletelistener = new View.OnClickListener() {
         @Override
@@ -227,6 +223,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     try {
+                        Log.i("result", "hobbyid delete : " + hobby.getHbId());
                         db.delete("Hobby", "hbId=?", new String[]{String.valueOf(hobby.getHbId())});
                         db.delete("Log", "hbId=?", new String[]{String.valueOf(hobby.getHbId())});
                         db.delete("Clockin", "hbId=?", new String[]{String.valueOf(hobby.getHbId())});
@@ -235,6 +232,8 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
                         return;
                     }
                     Toast.makeText(HobbyDetailAvtivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HobbyDetailAvtivity.this, DailyHobbyActivity.class);
+                    startActivity(intent);
 
                 }
             }).setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -246,16 +245,20 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             builder.create().show();
         }
     };
+
     //向习惯编辑页面跳转
     public View.OnClickListener editlistener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent intent1 = new Intent(HobbyDetailAvtivity.this, EditHobbyActivity.class);
+            intent1.putExtra("choice", "update");
             intent1.putExtra("Hobby", hobby);
-            intent1.putExtra("choice", "edit");
+            Log.i("result", "123 " + hobby.getHbName());
+            Log.i("result", "123 " + hobby.getHbCycle());
             startActivity(intent1);
         }
     };
+
     //今天设置红色圆环背景
     class CircleBackGroundSpan implements LineBackgroundSpan {
 
@@ -264,13 +267,14 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             Paint paint = new Paint();
             paint.setAntiAlias(true); //消除锯齿
             paint.setStyle(Paint.Style.STROKE);//绘制空心圆或 空心矩形
-            int ringWidth = dip2px(HobbyDetailAvtivity.this,1);//圆环宽度
+            int ringWidth = dip2px(HobbyDetailAvtivity.this, 1);//圆环宽度
             //绘制圆环
             paint.setColor(Color.parseColor("#FF3D62"));
             paint.setStrokeWidth(ringWidth);
-            c.drawCircle((right - left) / 2, (bottom - top) / 2 , dip2px(HobbyDetailAvtivity.this,18), paint);
+            c.drawCircle((right - left) / 2, (bottom - top) / 2, dip2px(HobbyDetailAvtivity.this, 18), paint);
         }
     }
+
     //打卡过的天设置淡蓝色圆环背景
     class AnnulusSpan implements LineBackgroundSpan {
         @Override
@@ -278,19 +282,19 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             Paint paint = new Paint();
             paint.setAntiAlias(true); //消除锯齿
             paint.setStyle(Paint.Style.STROKE);//绘制空心圆或 空心矩形
-            int ringWidth = dip2px(HobbyDetailAvtivity.this,1);//圆环宽度
+            int ringWidth = dip2px(HobbyDetailAvtivity.this, 1);//圆环宽度
             //绘制圆环
             paint.setColor(Color.parseColor("#00bcbe"));
             paint.setStrokeWidth(ringWidth);
-            c.drawCircle((right - left) / 2, (bottom - top) / 2 , dip2px(HobbyDetailAvtivity.this,18), paint);
+            c.drawCircle((right - left) / 2, (bottom - top) / 2, dip2px(HobbyDetailAvtivity.this, 18), paint);
         }
     }
+
     //向前一页面跳转
     public View.OnClickListener backListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(HobbyDetailAvtivity.this,EditHobbyActivity.class);
-            startActivity(intent);
+            finish();
         }
     };
 }

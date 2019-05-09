@@ -2,6 +2,7 @@ package com.example.yantu.androidproject.Adapter;
 /*侯禹驰*/
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -11,19 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
-import com.example.yantu.androidproject.DailyHobbyActivity;
-import com.example.yantu.androidproject.HobbyDetailAvtivity;
+import com.example.yantu.androidproject.Entity.Hobby;
 import com.example.yantu.androidproject.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapter.LinearViewHolder> {
     // 声明引用
@@ -31,21 +26,26 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
     private LayoutInflater mLayoutInflater;
     private MyDatabaseHelper dbHelper;
     private SQLiteDatabase db;
-    private List<Map<String, String>> list;
+    //private List<Map<String, String>> list;
+    private List<Hobby> hbList;
+    private DailyOnItemClickListener mOnItemClickListener = null;
+
 
     //创建构造函数引入Contex类型变量
-    public DailyRecycleAdapter(Context context){
+    public DailyRecycleAdapter(Context context, List<Hobby> hbList){
         this.mContext = context;
+        this.hbList = hbList;
         mLayoutInflater = LayoutInflater.from(context);
-        createDatabase();
+        //createDatabase();
     }
 
     // 创建数据库并查询所需数据
     public void createDatabase(){
-        dbHelper = new MyDatabaseHelper((HobbyDetailAvtivity) mContext, "yantu.db", null, 1);
-        dbHelper.getWritableDatabase();
-        db = dbHelper.getWritableDatabase();
-        list = new ArrayList<>();
+        //Caused by: java.lang.ClassCastException: com.example.yantu.androidproject.DailyHobbyActivity cannot be cast to com.example.yantu.androidproject.HobbyDetailAvtivity
+//        dbHelper = new MyDatabaseHelper(mContext, "yantu.db", null, 1);
+//        dbHelper.getWritableDatabase();
+//        db = dbHelper.getWritableDatabase();
+//        list = new ArrayList<>();
 //        Cursor c = db.rawQuery("select * from yantu",null);
 //        if (c != null)
 //        {
@@ -68,8 +68,9 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
         return new LinearViewHolder(mLayoutInflater.inflate(R.layout.item_recycle_daily,viewGroup,false));
     }
 
+    //通过holder设置TextView与button的内容
     @Override
-    public void onBindViewHolder(DailyRecycleAdapter.LinearViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final DailyRecycleAdapter.LinearViewHolder holder, final int position) {
 //        for (Map<String, String> m : list)
 //        {
 //            if (m.containsKey("id"))
@@ -86,17 +87,41 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
 //        {
 //            viewHolder.button.setEnabled(false);
 //        }
-        viewHolder.button.setOnClickListener(new View.OnClickListener() {
+
+        final Hobby hobby = hbList.get(position);
+        holder.textView.setText(hobby.getHbName());
+        holder.button.setText(String.valueOf(hobby.getHbCycle()));
+
+        holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("tag", "点击位置"+ v.getId());
+                Log.i("tag", "点击位置"+ position);
             }
         });
+
+        // ④ 注册点击事件
+        if(null != mOnItemClickListener) {
+            holder.button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.recycleViewOnClick(holder.textView, position);
+                }
+            });
+
+            holder.textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.recycleViewOnClick(holder.textView, position, true);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        //java.lang.NullPointerException: Attempt to invoke interface method 'int java.util.List.size()' on a null object reference
+        //return list.size();
+        return hbList == null ? 0 : hbList.size();
     }
 
     class LinearViewHolder extends RecyclerView.ViewHolder{
@@ -104,8 +129,29 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
         private Button button;
         public LinearViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.tvRecycleItem);
-            button = itemView.findViewById(R.id.button);
+            textView = itemView.findViewById(R.id.tvDailyRecycleItem);
+            button = itemView.findViewById(R.id.btnDailyCycle);
         }
     }
+
+    /**
+     * ① 在Adapter中创建点击事件接口
+     * ② 在Activity中实现点击事件接口
+     * ③ 在Adapter中添加设置点击事件函数
+     * ④ 在Adapter中调用recycleViewOnClick方法（注册点击事件）
+     */
+
+    // ① 点击事件接口
+    public interface DailyOnItemClickListener {
+        void recycleViewOnClick(View parent, int position);
+        void recycleViewOnClick(View parent, int position, boolean translate);
+    }
+
+    // ③ 添加设置点击事件函数，参数为DailyOnItemClickListener的实现，DailyHobbyActivity实现了此函数，因此l的值为DailyHobbyActivity.this
+    // 该函数在DailyHobbyActivity设置recycleview时调用
+    public void setOnItemClickListener(DailyOnItemClickListener l) {
+        this.mOnItemClickListener = l;
+    }
+
+
 }

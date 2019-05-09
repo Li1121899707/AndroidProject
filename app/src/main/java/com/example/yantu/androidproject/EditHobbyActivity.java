@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -51,15 +53,18 @@ public class EditHobbyActivity extends AppCompatActivity implements
         setContentView(R.layout.edit_hobby_activity);
         Utils.setStatusBar(this, false, false);
 
-        // 接收参数，添加只包含choice参数，修改还包含回显数据
-        Intent intent = new Intent();
+        // 接收参数，添加功能只包含choice参数，修改还包含回显数据
+        Intent intent = getIntent();
         try {
             choice = intent.getStringExtra("choice");
-            if (choice.equals("update"))
+            Log.i("result", choice);
+            if (choice.equals("update")){
                 hobby = (Hobby) intent.getSerializableExtra("Hobby");
+            }
         } catch (Exception e) {
             choice = "insert";
         }
+
 
         init();
         createDatabase();
@@ -74,18 +79,23 @@ public class EditHobbyActivity extends AppCompatActivity implements
         etHobbyCycle = findViewById(R.id.etHobbyCycle);
         recyclerView = findViewById(R.id.editIconList);
         selectedIcon = findViewById(R.id.selectedIcon);
+        Button btnEditHobby = findViewById(R.id.btnEditHobby);
 
         // 动态改变标题
-        if (choice.equals("edit")) {
+        if (choice.equals("update")) {
             tvHobbyTitle.setText("修改习惯");
-            etHobbyName.setText(hobby.getHbName());
-            etHobbyCycle.setText(hobby.getHbCycle());
+            if(hobby.getHbName() != null)
+                etHobbyName.setText(hobby.getHbName());
+            if(hobby.getHbCycle() != null)
+                etHobbyCycle.setText(String.valueOf(hobby.getHbCycle()));
+            btnEditHobby.setText("修改");
         } else if (choice.equals("add")) {
             tvHobbyTitle.setText("添加习惯");
+            btnEditHobby.setText("添加");
         }
 
         // button
-        findViewById(R.id.btnEditHobby).setOnClickListener(editListener);
+        btnEditHobby.setOnClickListener(editListener);
         findViewById(R.id.btnResetHobby).setOnClickListener(resetListener);
         findViewById(R.id.btnEditBack).setOnClickListener(backListener);
 
@@ -123,7 +133,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
         return result;
     }
 
-    // 添加/修改日志数据库表
+    // 添加/修改日志数据库表，返回自增主键ID
     public int editLog(Integer hbId, Integer lgTotal, Integer lgContinue) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -162,25 +172,39 @@ public class EditHobbyActivity extends AppCompatActivity implements
             android.util.Log.i("result", "name:" + name + "; icId:" + icId + "; hbTime:" +
                     hbTime + "; hbCycle" + hbCycleStr);
 
+            int resultCode = 1;
             if (choice.equals("insert")) {
                 int hobbyId = editHobby(name, icId, hbTime, hbCycle, "insert");
-                if (-1 == hobbyId)
+                if (-1 == hobbyId){
+                    resultCode = -1;
                     Toast.makeText(EditHobbyActivity.this, "添加习惯失败！", Toast.LENGTH_SHORT).show();
+                }
                 else
                     Toast.makeText(EditHobbyActivity.this, "添加习惯成功！", Toast.LENGTH_SHORT).show();
 
                 int logid = editLog(hobbyId, 1, 2);
-                if (-1 == logid)
+                if (-1 == logid){
+                    resultCode = -1;
                     Toast.makeText(EditHobbyActivity.this, "添加打卡日志失败！", Toast.LENGTH_SHORT).show();
+                }
                 else
                     Toast.makeText(EditHobbyActivity.this, "添加打卡日志成功！", Toast.LENGTH_SHORT).show();
             } else if (choice.equals("update")) {
                 int updateRes = editHobby(name, icId, hbTime, hbCycle, "update");
-                if (-1 == updateRes)
+                if (-1 == updateRes){
+                    resultCode = -1;
                     Toast.makeText(EditHobbyActivity.this, "修改习惯信息失败！", Toast.LENGTH_SHORT).show();
+                }
                 else
                     Toast.makeText(EditHobbyActivity.this, "修改习惯信息成功！", Toast.LENGTH_SHORT).show();
             }
+
+            if(-1 != resultCode){
+                Intent intent = new Intent(EditHobbyActivity.this, DailyHobbyActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
         }
     };
 
@@ -218,6 +242,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
         //设置这个线性布局管理器的方向,为水平方向
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         EditRecycleAdapter editRecycleAdapter = new EditRecycleAdapter(this, iconList);
+        // 设置监听事件。为创建的类的对象赋监听事件。
         editRecycleAdapter.setOnItemClickListener(this);
         //设置mHorRV的线性布局管理器
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -227,14 +252,21 @@ public class EditHobbyActivity extends AppCompatActivity implements
         recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
+    // 返回按钮监听事件
     private View.OnClickListener backListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(EditHobbyActivity.this, TodayHobbyActivity.class);
-            startActivity(intent);
+            if(choice.equals("insert")){
+                Intent intent = new Intent(EditHobbyActivity.this, TodayHobbyActivity.class);
+                startActivity(intent);
+            }
+            else if(choice.equals("update")){
+                finish();
+            }
         }
     };
 
+    // EditRecycleAdapter（图片列表）点击事件，实现EditRecycleAdapter类中的抽象方法
     @Override
     public void onClick(View parent, int position) {
         Toast.makeText(this, "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();

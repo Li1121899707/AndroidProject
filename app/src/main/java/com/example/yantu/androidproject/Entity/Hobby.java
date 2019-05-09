@@ -7,7 +7,7 @@ public class Hobby implements Serializable {
     private int hbId;
     private String hbName;
     private String hbTime;
-    private String hbCycle;
+    private Integer hbCycle;
     private String hbImg = "";
 
     public int getHbId() {
@@ -34,11 +34,11 @@ public class Hobby implements Serializable {
         this.hbTime = hbTime;
     }
 
-    public String getHbCycle() {
+    public Integer getHbCycle() {
         return hbCycle;
     }
 
-    public void setHbCycle(String hbCycle) {
+    public void setHbCycle(Integer hbCycle) {
         this.hbCycle = hbCycle;
     }
 
