@@ -19,7 +19,11 @@ import com.example.yantu.androidproject.Fragment.SettingFragment;
 import com.example.yantu.androidproject.Fragment.TodayFragment;
 import com.example.yantu.androidproject.Util.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,6 +144,21 @@ public class MainActivity extends AppCompatActivity {
             mainTitle.setText("Settings");
             ivAddHobby.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void getTime() throws ParseException {
+        SimpleDateFormat sj = new SimpleDateFormat("yyyy-MM-dd");
+        String today = "2015-11-30";
+        Date d = sj.parse(today);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(d);
+        calendar.add(Calendar.DATE, 1);
+        android.util.Log.i("result", sj.format(calendar.getTime()));
+        //此时日期变为2015-12-01 ，所以下面的-2，
+        //理论上讲应该是2015-11-29
+        calendar.add(calendar.DATE, -2);
+        android.util.Log.i("result",sj.format(calendar.getTime()));
+
     }
 
 }
