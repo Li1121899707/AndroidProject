@@ -1,5 +1,5 @@
 package com.example.yantu.androidproject.Util;
-
+/*来源：网络*/
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;

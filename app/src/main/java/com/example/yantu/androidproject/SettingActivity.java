@@ -1,11 +1,7 @@
 package com.example.yantu.androidproject;
 /*张立才*/
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -15,15 +11,8 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.yantu.androidproject.Broadcast.AlarmReceiver;
-import com.example.yantu.androidproject.Entity.Log;
 import com.example.yantu.androidproject.Util.AlarmUtil;
 import com.example.yantu.androidproject.Util.Utils;
-
-import java.util.Calendar;
-
-import static android.app.AlarmManager.INTERVAL_DAY;
-import static com.example.yantu.androidproject.Broadcast.AlarmReceiver.INTENT_ALARM_LOG;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -91,7 +80,7 @@ public class SettingActivity extends AppCompatActivity {
             if(isChecked){
                 vibrateSwitch.setClickable(true);
                 OpenNotification();
-                Toast.makeText(SettingActivity.this, "您已打开通知!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "您已开启通知!", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(SettingActivity.this, "您已关闭通知!", Toast.LENGTH_SHORT).show();
                 CloseNotification();
@@ -105,7 +94,7 @@ public class SettingActivity extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if(isChecked){
                 VibrateController("1");
-                Toast.makeText(SettingActivity.this, "您已打震动!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "您已开启震动!", Toast.LENGTH_SHORT).show();
             }else{
                 VibrateController("0");
                 Toast.makeText(SettingActivity.this, "您已关闭震动!", Toast.LENGTH_SHORT).show();
