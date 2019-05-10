@@ -183,7 +183,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
                 else
                     Toast.makeText(EditHobbyActivity.this, "添加习惯成功！", Toast.LENGTH_SHORT).show();
 
-                int logid = editLog(hobbyId, 1, 2);
+                int logid = editLog(hobbyId, 0, 0);
                 if (-1 == logid){
                     resultCode = -1;
                     Toast.makeText(EditHobbyActivity.this, "添加打卡日志失败！", Toast.LENGTH_SHORT).show();
@@ -233,7 +233,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
 
     public void createIconList() {
         iconList = new ArrayList<>();
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= 14; i++) {
             iconList.add("icon" + String.valueOf(i));
         }
 
@@ -262,7 +262,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
 
     // EditRecycleAdapter（图片列表）点击事件，实现EditRecycleAdapter类中的抽象方法
     @Override
-    public void onClick(View parent, int position) {
+    public void onClick(ImageView parent, int position) {
         Toast.makeText(this, "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
         iconPosition = position;
         String uriStr = "android.resource://com.example.yantu.androidproject/drawable/" + iconList.get(position);

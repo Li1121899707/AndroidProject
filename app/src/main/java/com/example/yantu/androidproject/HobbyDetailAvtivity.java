@@ -44,6 +44,7 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     private Hobby hobby;
     private int Total;
     private int Continue;
+    private TextView hobbies;
     private TextView totalday;
     private TextView continueday;
     private ArrayList<String> dates;
@@ -52,44 +53,11 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-
-    /**************************************************/
-    //添加模拟数据
-    public void addData() {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("hbId", 1);
-        values.put("lgTotal", 10);
-        values.put("lgContinue", 5);
-        db.insert("Log", null, values);
-        values.clear();
-        values.put("hbId", 1);
-        values.put("ciDate", "2019-05-03");
-        db.insert("Clockin", null, values);
-        values.clear();
-        values.put("hbId", 1);
-        values.put("ciDate", "2019-05-04");
-        db.insert("Clockin", null, values);
-        values.clear();
-        values.put("hbId", 1);
-        values.put("ciDate", "2019-05-02");
-        db.insert("Clockin", null, values);
-        values.clear();
-        values.put("hbId", 1);
-        values.put("ciDate", "2019-05-01");
-        db.insert("Clockin", null, values);
-        values.clear();
-        values.put("hbId", 1);
-        values.put("ciDate", "2019-05-05");
-        db.insert("Clockin", null, values);
-        values.clear();
-    }
-
-    /*************************************************/
     //初始化控件
     public void init() {
         delete = findViewById(R.id.delete);
         edit = findViewById(R.id.edit);
+        hobbies = findViewById(R.id.hobbies);
         totalday = findViewById(R.id.total);
         btnDetailBack = findViewById(R.id.btnDetailBack);
         continueday = findViewById(R.id.continueday);
@@ -97,18 +65,14 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         dbHelper = new MyDatabaseHelper(this, "yantu.db", null, 1);
         hobby = (Hobby)getIntent().getSerializableExtra("Hobby");
         dates = new ArrayList<>();
-
         btnDetailBack.setOnClickListener(backListener);
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hobby_detail_avtivity);
         Utils.setStatusBar(this, false, false);
-
         init();
-        //addData();
         getTotalAndContinue();
         getAllDates();
         Log.i("2", String.valueOf(dates.size()));
@@ -116,9 +80,8 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             Log.i("2", dates.get(i));
         }
         materialCalendarView.setSelectionColor(0xff4285f4);
-        //hobbies.setText(hobby.getHbName());
+        hobbies.setText(hobby.getHbName());
         //查询数据库读出相关的天数
-
         delete.setOnClickListener(deletelistener);
         edit.setOnClickListener(editlistener);
         materialCalendarView.addDecorators(new EventDecorator(dates), new SameDayDecorator());
@@ -140,8 +103,6 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
         @Override
         public void decorate(DayViewFacade dayViewFacade) {
             dayViewFacade.addSpan(new AnnulusSpan());
-            //dayViewFacade.addSpan(new ForegroundColorSpan(Color.GREEN));
-
         }
     }
 
@@ -154,25 +115,16 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
             String year = String.valueOf(calendar.get(Calendar.YEAR));
             String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
             String day = String.valueOf(calendar.get(Calendar.DATE));
-            if (calendar.get(Calendar.MONTH) + 1 < 10) {
+            if (calendar.get(Calendar.MONTH) + 1 < 10)
                 month = "0" + month;
-            }
-            if (calendar.get(Calendar.DATE) < 10) {
+            if (calendar.get(Calendar.DATE) < 10)
                 day = "0" + day;
-            }
             String parse = year + "-" + month + "-" + day;
-            //android.util.Log.i("1", String.valueOf(calendarDay.getDate()));
-            //android.util.Log.i("1",parse);
-            if (String.valueOf(calendarDay.getDate()).equals(parse)) {
-                //android.util.Log.i("1","正确");
-                return true;
-            }
-            return false;
+            return String.valueOf(calendarDay.getDate()).equals(parse);
         }
 
         @Override
         public void decorate(DayViewFacade dayViewFacade) {
-            //dayViewFacade.addSpan(new ForegroundColorSpan(Color.RED));
             dayViewFacade.addSpan(new CircleBackGroundSpan());
         }
     }
