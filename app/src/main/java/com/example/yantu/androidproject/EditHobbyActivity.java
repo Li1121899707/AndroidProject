@@ -183,7 +183,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
                 else
                     Toast.makeText(EditHobbyActivity.this, "添加习惯成功！", Toast.LENGTH_SHORT).show();
 
-                int logid = editLog(hobbyId, 1, 2);
+                int logid = editLog(hobbyId, 0, 0);
                 if (-1 == logid){
                     resultCode = -1;
                     Toast.makeText(EditHobbyActivity.this, "添加打卡日志失败！", Toast.LENGTH_SHORT).show();
