@@ -32,6 +32,7 @@
 
 
         <LinearLayout
+            android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:layout_width="match_parent"
@@ -52,6 +53,26 @@
 
                 <Switch
                     android:id="@+id/notiSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="是否开启震动"
+                    android:textSize="16dp" />
+
+                <Switch
+                    android:id="@+id/vibrateSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />

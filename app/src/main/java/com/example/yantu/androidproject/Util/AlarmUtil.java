@@ -1,25 +1,22 @@
 package com.example.yantu.androidproject.Util;
-
+/*李洋*/
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+
 import android.widget.Toast;
 
 import com.example.yantu.androidproject.Broadcast.AlarmReceiver;
-import com.example.yantu.androidproject.Entity.Log;
-import com.example.yantu.androidproject.SettingActivity;
 
 import java.util.Calendar;
 
-import static android.app.AlarmManager.INTERVAL_DAY;
 import static com.example.yantu.androidproject.Broadcast.AlarmReceiver.INTENT_ALARM_LOG;
 
 public class AlarmUtil {
 
     // 设置Alarm
-    public void setAlarmTime(Context context, long timeInMillis, String action, int requestCode) {
+    private void setAlarmTime(Context context, long timeInMillis, String action, int requestCode) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(action);
         intent.setClass(context, AlarmReceiver.class);
@@ -29,14 +26,13 @@ public class AlarmUtil {
     }
 
     // 销毁Alarm
-    public void canalAlarm(Context context, String action, int requestCode) {
+    private void canalAlarm(Context context, String action, int requestCode) {
         Intent intent = new Intent(action);
         intent.setClass(context, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(pi);
-
-        android.util.Log.i("result", "closeAlarm");
+        android.util.Log.i("result", "closeAlarm" + requestCode);
     }
 
     public void openAlarm(Context context, int alarmChoice) {

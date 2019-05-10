@@ -31,7 +31,6 @@ import java.util.Map;
 
 public class DailyHobbyActivity extends AppCompatActivity implements DailyRecycleAdapter.DailyOnItemClickListener{
 
-    private ImageView addHobby;
     private RecyclerView rvDaily;
     private MyDatabaseHelper dbHelper;
     private List<Hobby> hobbyList;
@@ -51,7 +50,7 @@ public class DailyHobbyActivity extends AppCompatActivity implements DailyRecycl
         // 初始化控件
         rvDaily = findViewById(R.id.rvDaily);
         hobbyList = new ArrayList<>();
-        addHobby = findViewById(R.id.addHobby);
+        ImageView addHobby = findViewById(R.id.addHobby);
 
         // 底部导航栏注册监听事件（需合并，拆分为fragment）
         BottomNavigationView navigation = findViewById(R.id.navigationDailly);

@@ -161,22 +161,27 @@ public class TodayHobbyActivity extends AppCompatActivity {
                 String hbIcon = cursor.getString(cursor.getColumnIndex("hbIcon"));
                 String hbTime = cursor.getString(cursor.getColumnIndex("hbTime"));
                 Map<String, Object> map = new HashMap<String, Object>();
-                if (hbTime.equals("1")) {
-                    map.put("img", hbIcon);
-                    map.put("name", hbName);
-                    funclist1.add(map);
-                } else if (hbTime.equals("2")) {
-                    map.put("img", hbIcon);
-                    map.put("name", hbName);
-                    funclist2.add(map);
-                } else if (hbTime.equals("3")) {
-                    map.put("img", hbIcon);
-                    map.put("name", hbName);
-                    funclist3.add(map);
-                } else if (hbTime.equals("0")) {
-                    map.put("img", hbIcon);
-                    map.put("name", hbName);
-                    funclist4.add(map);
+                switch (hbTime) {
+                    case "1":
+                        map.put("img", hbIcon);
+                        map.put("name", hbName);
+                        funclist1.add(map);
+                        break;
+                    case "2":
+                        map.put("img", hbIcon);
+                        map.put("name", hbName);
+                        funclist2.add(map);
+                        break;
+                    case "3":
+                        map.put("img", hbIcon);
+                        map.put("name", hbName);
+                        funclist3.add(map);
+                        break;
+                    case "0":
+                        map.put("img", hbIcon);
+                        map.put("name", hbName);
+                        funclist4.add(map);
+                        break;
                 }
 
             } while (cursor.moveToNext());

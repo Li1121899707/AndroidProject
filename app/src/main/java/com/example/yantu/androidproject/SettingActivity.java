@@ -1,5 +1,5 @@
 package com.example.yantu.androidproject;
-
+/*张立才*/
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.yantu.androidproject.Broadcast.AlarmReceiver;
 import com.example.yantu.androidproject.Entity.Log;
 import com.example.yantu.androidproject.Util.AlarmUtil;
+import com.example.yantu.androidproject.Util.Utils;
 
 import java.util.Calendar;
 
@@ -27,12 +28,15 @@ import static com.example.yantu.androidproject.Broadcast.AlarmReceiver.INTENT_AL
 public class SettingActivity extends AppCompatActivity {
 
     private Switch notiSwitch;
+    private Switch vibrateSwitch;
     private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_activity);
+        Utils.setStatusBar(this, false, false);
+
         init();
     }
 
@@ -42,16 +46,22 @@ public class SettingActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.navigation_notifications);
 
         notiSwitch = findViewById(R.id.notiSwitch);
-        notiSwitch.setOnCheckedChangeListener(switchListener);
+        vibrateSwitch = findViewById(R.id.vibrateSwitch);
 
         sp = getSharedPreferences("settings", MODE_PRIVATE);
 
-        String notification = sp.getString("notification_setting","0");
-        if(notification.equals("1"))
+        String notiChoice = sp.getString("notification_setting","0");
+        String vibChoice = sp.getString("vibrate_setting","0");
+
+        if(notiChoice != null && notiChoice.equals("1"))
             notiSwitch.setChecked(true);
         else
-            notiSwitch.setChecked(false);
+            vibrateSwitch.setClickable(false);
+        if(vibChoice != null && vibChoice.equals("1"))
+            vibrateSwitch.setChecked(true);
 
+        notiSwitch.setOnCheckedChangeListener(switchListener);
+        vibrateSwitch.setOnCheckedChangeListener(vibListener);
     }
 
     // 底部状态栏监听事件（lysuzy）
@@ -79,11 +89,26 @@ public class SettingActivity extends AppCompatActivity {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if(isChecked){
+                vibrateSwitch.setClickable(true);
                 OpenNotification();
                 Toast.makeText(SettingActivity.this, "您已打开通知!", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(SettingActivity.this, "您已关闭通知!", Toast.LENGTH_SHORT).show();
                 CloseNotification();
+                vibrateSwitch.setClickable(false);
+            }
+        }
+    };
+
+    public CompoundButton.OnCheckedChangeListener vibListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked){
+                VibrateController("1");
+                Toast.makeText(SettingActivity.this, "您已打震动!", Toast.LENGTH_SHORT).show();
+            }else{
+                VibrateController("0");
+                Toast.makeText(SettingActivity.this, "您已关闭震动!", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -102,6 +127,12 @@ public class SettingActivity extends AppCompatActivity {
         editor.putString("notification_setting","0");
         editor.apply();
         alarmUtil.closeAlarm(SettingActivity.this);
+    }
+
+    public void VibrateController(String open){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("vibrate_setting",open);
+        editor.apply();
     }
 
 }
