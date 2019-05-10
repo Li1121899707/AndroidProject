@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +32,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemClickListener{
 
@@ -39,10 +43,18 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     private RecyclerView mhorRV2;
     private RecyclerView mhorRV3;
     private RecyclerView mhorRV4;
+    private ImageView funcImg;
+    private String newImg;
+    private Integer funcID;
     //private TextView mTextMessage;
     TextView lastDay;
     MyDatabaseHelper dbHelper;
     Boolean up = false;//默认false不刷新
+    private Set<Hobby> hbSet;
+    private List<Hobby> funclist1 ;
+    private List<Hobby> funclist2 ;
+    private List<Hobby> funclist3 ;
+    private List<Hobby> funclist4 ;
 
 
     @Override
@@ -55,7 +67,9 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Utils.setStatusBar(getActivity(), false, false);
+
         init();
+
     }
 
     public long dateDiff(String startTime, String endTime, String format) {
@@ -100,6 +114,12 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     }
 
     public void init(){
+
+        hbSet = new HashSet<>();
+        funclist1 = new ArrayList<>();
+        funclist2 = new ArrayList<>();
+        funclist3 = new ArrayList<>();
+        funclist4 = new ArrayList<>();
         ///////////////////////////////////////////////////////////////////////////////////////////////////获取倒计时
         Calendar calendar = Calendar.getInstance();                   //获取系统的日期
         //年
@@ -128,10 +148,7 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         //Toast.makeText(TodayHobbyActivity.this, "" + daynumber, Toast.LENGTH_LONG).show();
 
         //////////////////////////////////////////////////////////////////////////////////////////////////读取功能
-        final List<Hobby> funclist1 = new ArrayList<Hobby>();
-        final List<Hobby> funclist2 = new ArrayList<Hobby>();
-        final List<Hobby> funclist3 = new ArrayList<Hobby>();
-        final List<Hobby> funclist4 = new ArrayList<Hobby>();
+
         dbHelper = new MyDatabaseHelper(getActivity(), "yantu.db", null, 1);
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query("Hobby", null, null, null, null, null, null);
@@ -163,10 +180,18 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         }
         cursor.close();
 
+        querySignedItem();
+        updateList(funclist1);
+        updateList(funclist2);
+        updateList(funclist3);
+        updateList(funclist4);
+
+
         mhorRV1 = getActivity().findViewById(R.id.morningList);
         mhorRV2 = getActivity().findViewById(R.id.noonList);
         mhorRV3 = getActivity().findViewById(R.id.eveningList);
         mhorRV4 = getActivity().findViewById(R.id.otherList);
+
         //设置一个线性布局管理器,因为要设置方向，就不采用匿名内部类的方式了
         //生成一个LinearLayoutManager的对象
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity());
@@ -218,7 +243,7 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     }
 
     @Override
-    public void onClick1(final Hobby hobby, int position) {
+    public void onClick1(final ImageView imageView, final Hobby hobby, int position) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // 通过LayoutInflater来加载一个xml的布局文件作为一个View对象
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_pop_add, null);
@@ -227,8 +252,8 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         //这个位置十分重要，只有位于这个位置逻辑才是正确的
         final AlertDialog dialog = builder.show();
         /////////////////////////////////////////////////////////////////////////////////////////////打卡操作
-        final String newImg =hobby.getHbImg();
-        final int funcID = hobby.getHbId();
+        newImg =hobby.getHbImg();
+        funcID = hobby.getHbId();
 
         //java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -273,7 +298,10 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
                 values.clear();
                 String beginPath = "android.resource://com.example.yantu.androidproject/drawable/";
                 hobby.setHbImg(beginPath + newImg + "_1");
+                Log.i("result", beginPath + newImg + "_1");
                 Toast.makeText(getActivity(),"您已完成打卡",Toast.LENGTH_SHORT).show();
+                imageView.setImageURI(Uri.parse(hobby.getHbImg()));
+
 
                 ContentValues values1 = new ContentValues();
                 Cursor cursor2 = db.query("Log", null, "hbId=?", new String[]{String.valueOf(funcID)}, null, null, null);
@@ -313,4 +341,39 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
             }
         });
     }
+
+
+    public void querySignedItem(){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        final String nowDate = sdf.format(new Date());
+
+        Cursor cursor = db.rawQuery("select Clockin.hbId as id, hbName, hbTime, hbCycle, hbIcon, ciDate from Clockin, Hobby where Hobby.hbId = Clockin.hbid and Clockin.ciDate = ?", new String[]{nowDate});
+        if(cursor.moveToFirst()){
+            do {
+                Hobby hobby = new Hobby();
+                hobby.setHbId(cursor.getInt(cursor.getColumnIndex("hbId")));
+                hobby.setHbName(cursor.getString(cursor.getColumnIndex("hbName")));
+                hobby.setHbImg(cursor.getString(cursor.getColumnIndex("hbIcon")));
+                hobby.setHbTime(cursor.getString(cursor.getColumnIndex("hbTime")));
+                hobby.setHbCycle(cursor.getInt(cursor.getColumnIndex("hbCycle")));
+                hbSet.add(hobby);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+    }
+
+    public void updateList(List<Hobby> list){
+        for(int i = 0; i<list.size(); i++ ){
+            Hobby hobby = list.get(i);
+            if(hbSet.contains(hobby)){
+                String newImg = "android.resource://com.example.yantu.androidproject/drawable/" + hobby.getHbImg() + "_1";
+                hbSet.remove(hobby);
+                hobby.setHbImg(newImg);
+                hbSet.add(hobby);
+            }
+        }
+    }
+
+
 }

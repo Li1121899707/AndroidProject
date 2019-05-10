@@ -54,7 +54,7 @@ public class HorLinearAdapter extends RecyclerView.Adapter<HorLinearAdapter.Line
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onClick1(hobby, position);
+                    mOnItemClickListener.onClick1(holder.imageView, hobby, position);
                 }
             });
 
@@ -75,7 +75,7 @@ public class HorLinearAdapter extends RecyclerView.Adapter<HorLinearAdapter.Line
 
     // 点击事件接口
     public interface OnItemClickListener {
-        void onClick1(Hobby hobby, int position);
+        void onClick1(ImageView imageView, Hobby hobby, int position);
     }
     // 设置点击事件
     public void setOnItemClickListener(OnItemClickListener l) {
