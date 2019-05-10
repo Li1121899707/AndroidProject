@@ -3,6 +3,7 @@ package com.example.yantu.androidproject.Broadcast;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -64,6 +65,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             mChannel.setDescription(description);//渠道描述
             mChannel.enableLights(true);//是否显示通知指示灯
             mChannel.enableVibration(vibBool);//是否振动
+            PendingIntent pIntent = PendingIntent.getActivity(context, 1, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationManager notificationManager = (NotificationManager)
                     context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(mChannel);
@@ -73,7 +75,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                     setContentTitle(title).
                     setContentText(content).
                     setNumber(3);
-            notificationManager.notify(alarmChoice, builder.build());
+            builder.setContentIntent(pIntent);
+            builder.setFullScreenIntent(pIntent, true);
+            builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+            builder.setContentIntent(pIntent);
+            builder.setAutoCancel(true);
+            notificationManager.notify(1, builder.build());
         } else {
             Toast.makeText(context, "Alarm2", Toast.LENGTH_SHORT).show();
             Notification notification =

@@ -40,7 +40,7 @@ public class AlarmUtil {
         android.util.Log.i("result", "alarmchoice" + alarmChoice);
         if(alarmChoice == 4 || alarmChoice == 1){
             Calendar calendarMorning = Calendar.getInstance();
-            calendarMorning.set(Calendar.HOUR_OF_DAY, 7);
+            calendarMorning.set(Calendar.HOUR_OF_DAY, 8);
             calendarMorning.set(Calendar.MINUTE, 0);
             calendarMorning.set(Calendar.SECOND, 0);
 
@@ -54,8 +54,8 @@ public class AlarmUtil {
         }
         if(alarmChoice == 4 || alarmChoice == 2){
             Calendar calendarAfternoon = Calendar.getInstance();
-            calendarAfternoon.set(Calendar.HOUR_OF_DAY, 13);
-            calendarAfternoon.set(Calendar.MINUTE, 0);
+            calendarAfternoon.set(Calendar.HOUR_OF_DAY, 14);
+            calendarAfternoon.set(Calendar.MINUTE, 31);
             calendarAfternoon.set(Calendar.SECOND, 0);
 
             if(currCalendar.compareTo(calendarAfternoon) > 0 || alarmChoice == 2){
@@ -66,7 +66,7 @@ public class AlarmUtil {
         }
         if(alarmChoice == 4 || alarmChoice == 3){
             Calendar calendarNoon = Calendar.getInstance();
-            calendarNoon.set(Calendar.HOUR_OF_DAY, 19);
+            calendarNoon.set(Calendar.HOUR_OF_DAY, 20);
             calendarNoon.set(Calendar.MINUTE, 0);
             calendarNoon.set(Calendar.SECOND, 0);
 

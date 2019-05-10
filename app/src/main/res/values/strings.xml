@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AndroidProject</string>
     <string name="title_activity_today_hobby">TodayHobbyActivity</string>
-    <string name="title_home">Today</string>
+    <string name="title_home">今日习惯</string>
     <string name="title_dashboard">日常习惯</string>
     <string name="title_notifications">设置</string>
 

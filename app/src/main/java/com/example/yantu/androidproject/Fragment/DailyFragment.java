@@ -53,7 +53,7 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
         // 初始化控件
         rvDaily = getActivity().findViewById(R.id.rvDaily);
         hobbyList = new ArrayList<>();
-        ImageView addHobby = getActivity().findViewById(R.id.addHobby);
+        ImageView addHobby = getActivity().findViewById(R.id.ivAddHobby);
 
         addHobby.setOnClickListener(addHobbyListener);
 

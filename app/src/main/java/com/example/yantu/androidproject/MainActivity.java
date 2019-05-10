@@ -1,5 +1,6 @@
 package com.example.yantu.androidproject;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yantu.androidproject.Entity.Log;
@@ -16,14 +20,16 @@ import com.example.yantu.androidproject.Fragment.TodayFragment;
 import com.example.yantu.androidproject.Util.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNavigationView;
-
+    private TextView mainTitle;
+    private ImageView ivAddHobby;
     private int lastIndex;
     List<Fragment> mFragments;
-    Boolean up = false;//默认false不刷新
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Utils.setStatusBar(this, false, false);
         initBottomNavigation();
-        initData();
+        init();
 
         try {
             int id = getIntent().getIntExtra("id", 0);
@@ -43,19 +49,60 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void initData() {
+    public void init() {
+        mainTitle = findViewById(R.id.mainTitle);
+        ivAddHobby = findViewById(R.id.ivAddHobby);
         mFragments = new ArrayList<>();
         mFragments.add(new TodayFragment());
         mFragments.add(new DailyFragment());
         mFragments.add(new SettingFragment());
         // 初始化展示MessageFragment
         setFragmentPosition(0);
+
+        ivAddHobby.setOnClickListener(imgListener);
     }
 
     public void initBottomNavigation() {
         mBottomNavigationView = findViewById(R.id.bottomNavigationMain);
         // 解决当item大于三个时，非平均布局问题
-        //BottomNavigationViewHelper.disableShiftMode(mBottomNavigationView);
+        setListener();
+    }
+
+
+    private void setFragmentPosition(int position) {
+        // 先取消，否则无限循环。不取消执行setSelectedItemId相当于执行了一遍监听事件
+        changeTopBar(position);
+        dropListener();
+        if(position == 0)
+            mBottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        else if(position == 1)
+            mBottomNavigationView.setSelectedItemId(R.id.navigation_dashboard);
+        else if(position == 2)
+            mBottomNavigationView.setSelectedItemId(R.id.navigation_notifications);
+        setListener();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment currentFragment = mFragments.get(position);
+        Fragment lastFragment = mFragments.get(lastIndex);
+        lastIndex = position;
+        ft.hide(lastFragment);
+        if (!currentFragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
+            ft.add(R.id.frameLayout, currentFragment);
+        }
+        ft.show(currentFragment);
+        ft.commitAllowingStateLoss();
+    }
+
+    public View.OnClickListener imgListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, EditHobbyActivity.class);
+            intent.putExtra("choice", "insert");
+            startActivity(intent);
+        }
+    };
+
+    public void setListener(){
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -78,19 +125,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void dropListener(){
+        mBottomNavigationView.setOnNavigationItemSelectedListener(null);
+    }
 
-    private void setFragmentPosition(int position) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment currentFragment = mFragments.get(position);
-        Fragment lastFragment = mFragments.get(lastIndex);
-        lastIndex = position;
-        ft.hide(lastFragment);
-        if (!currentFragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
-            ft.add(R.id.frameLayout, currentFragment);
+    public void changeTopBar(int position){
+        if(position == 0){
+            mainTitle.setText("Today");
+            ivAddHobby.setVisibility(View.INVISIBLE);
+        }else if(position == 1){
+            mainTitle.setText("Daily");
+            ivAddHobby.setVisibility(View.VISIBLE);
+        }else if(position == 2){
+            mainTitle.setText("Settings");
+            ivAddHobby.setVisibility(View.INVISIBLE);
         }
-        ft.show(currentFragment);
-        ft.commitAllowingStateLoss();
     }
 
 }
