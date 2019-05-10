@@ -74,7 +74,7 @@ public class EditRecycleAdapter extends RecyclerView.Adapter <EditRecycleAdapter
 
     // 点击事件接口
     public interface OnItemClickListener {
-        void onClick(View parent, int position);
+        void onClick(ImageView parent, int position);
     }
 
 }
