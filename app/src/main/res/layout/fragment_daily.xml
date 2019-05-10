@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/mainBlue"
-    tools:context=".DailyHobbyActivity">
+    tools:context=".Fragment.DailyFragment">
 
     <LinearLayout
         android:id="@+id/dailyLayoutTop"
@@ -38,7 +35,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/dailyLayoutTop"
         android:background="@color/white">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvDaily"
@@ -47,18 +43,4 @@
             />
     </LinearLayout>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigationDailly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="#94a7c5e2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation" />
-
-</RelativeLayout>
+</FrameLayout>

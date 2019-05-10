@@ -1,5 +1,5 @@
 package com.example.yantu.androidproject;
-
+/*臧博浩*/
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
 import com.example.yantu.androidproject.Entity.Hobby;
+import com.example.yantu.androidproject.Fragment.DailyFragment;
 import com.example.yantu.androidproject.Util.Utils;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -232,7 +233,8 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
                         return;
                     }
                     Toast.makeText(HobbyDetailAvtivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HobbyDetailAvtivity.this, DailyHobbyActivity.class);
+                    Intent intent = new Intent(HobbyDetailAvtivity.this, MainActivity.class);
+                    intent.putExtra("id",1);
                     startActivity(intent);
 
                 }

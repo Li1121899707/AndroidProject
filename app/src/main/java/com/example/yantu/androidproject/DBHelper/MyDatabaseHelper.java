@@ -4,10 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.yantu.androidproject.DailyHobbyActivity;
 import com.example.yantu.androidproject.EditHobbyActivity;
 import com.example.yantu.androidproject.HobbyDetailAvtivity;
-import com.example.yantu.androidproject.TodayHobbyActivity;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_HOBBY = "create table Hobby("+
@@ -21,22 +19,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "ciDate text)";
     private Context mContext;
 
-    public MyDatabaseHelper(HobbyDetailAvtivity context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context,name,factory,version);
-        mContext = context;
-    }
 
-    public MyDatabaseHelper(TodayHobbyActivity context, String name, Object factory, int version) {
-        super(context,name, (SQLiteDatabase.CursorFactory) factory,version);
-        mContext = context;
-    }
-
-    public MyDatabaseHelper(EditHobbyActivity context, String name, Object factory, int version) {
-        super(context,name, (SQLiteDatabase.CursorFactory) factory,version);
-        mContext = context;
-    }
-
-    public MyDatabaseHelper(DailyHobbyActivity context, String name, Object factory, int version) {
+    public MyDatabaseHelper(Context context, String name, Object factory, int version) {
         super(context,name, (SQLiteDatabase.CursorFactory) factory,version);
         mContext = context;
     }

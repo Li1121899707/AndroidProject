@@ -201,8 +201,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
             }
 
             if(-1 != resultCode){
-                Intent intent = new Intent(EditHobbyActivity.this, DailyHobbyActivity.class);
-                startActivity(intent);
+                returnMainActivity();
                 finish();
             }
 
@@ -268,5 +267,12 @@ public class EditHobbyActivity extends AppCompatActivity implements
         iconPosition = position;
         String uriStr = "android.resource://com.example.yantu.androidproject/drawable/" + iconList.get(position);
         selectedIcon.setImageURI(Uri.parse(uriStr));
+    }
+
+    public void returnMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("id",1);
+        startActivity(intent);
+        finish();
     }
 }

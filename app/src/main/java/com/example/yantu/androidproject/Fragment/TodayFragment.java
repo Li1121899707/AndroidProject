@@ -1,26 +1,19 @@
-package com.example.yantu.androidproject;
-
-import android.content.Intent;
+package com.example.yantu.androidproject.Fragment;
+/*姚越*/
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.yantu.androidproject.Adapter.HorLinearAdapter;
 import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
-import com.example.yantu.androidproject.Entity.Log;
+import com.example.yantu.androidproject.R;
 import com.example.yantu.androidproject.Util.Utils;
 
 import java.text.DateFormat;
@@ -33,7 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TodayHobbyActivity extends AppCompatActivity {
+public class TodayFragment extends Fragment {
+
     private RecyclerView mhorRV1;
     private RecyclerView mhorRV2;
     private RecyclerView mhorRV3;
@@ -43,29 +37,19 @@ public class TodayHobbyActivity extends AppCompatActivity {
     MyDatabaseHelper dbHelper;
     Boolean up = false;//默认false不刷新
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    Intent intent = new Intent(TodayHobbyActivity.this, DailyHobbyActivity.class);
-                    startActivity(intent);
-                    //mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    Intent intent1 = new Intent(TodayHobbyActivity.this, SettingActivity.class);
-                    startActivity(intent1);
-                    //mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_today, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Utils.setStatusBar(getActivity(), false, false);
+        init();
+    }
 
     public long dateDiff(String startTime, String endTime, String format) {
         // 按照传入的格式生成一个simpledateformate对象
@@ -108,18 +92,7 @@ public class TodayHobbyActivity extends AppCompatActivity {
         return 0;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.today_hobby_activity);
-
-        //隐藏系统标题栏
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.hide();
-//        }
-
-        Utils.setStatusBar(this, false, false);
+    public void init(){
         ///////////////////////////////////////////////////////////////////////////////////////////////////获取倒计时
         Calendar calendar = Calendar.getInstance();                   //获取系统的日期
         //年
@@ -143,7 +116,7 @@ public class TodayHobbyActivity extends AppCompatActivity {
         }
         goalDate = String.valueOf(goalYear) + "-12-21";
         daynumber = dateDiff(nowDate, goalDate, "yyyy-MM-dd");
-        lastDay = (TextView) findViewById(R.id.lastDay);
+        lastDay = getActivity().findViewById(R.id.lastDay);
         lastDay.setText("考研倒计时 " + daynumber + " 天");
         //Toast.makeText(TodayHobbyActivity.this, "" + daynumber, Toast.LENGTH_LONG).show();
 
@@ -152,7 +125,7 @@ public class TodayHobbyActivity extends AppCompatActivity {
         final List<Map<String, Object>> funclist2 = new ArrayList<Map<String, Object>>();
         final List<Map<String, Object>> funclist3 = new ArrayList<Map<String, Object>>();
         final List<Map<String, Object>> funclist4 = new ArrayList<Map<String, Object>>();
-        dbHelper = new MyDatabaseHelper(TodayHobbyActivity.this, "yantu.db", null, 1);
+        dbHelper = new MyDatabaseHelper(getActivity(), "yantu.db", null, 1);
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.query("Hobby", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
@@ -188,16 +161,16 @@ public class TodayHobbyActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        mhorRV1 = (RecyclerView) findViewById(R.id.morningList);
-        mhorRV2 = (RecyclerView) findViewById(R.id.noonList);
-        mhorRV3 = (RecyclerView) findViewById(R.id.eveningList);
-        mhorRV4 = (RecyclerView) findViewById(R.id.otherList);
+        mhorRV1 = getActivity().findViewById(R.id.morningList);
+        mhorRV2 = getActivity().findViewById(R.id.noonList);
+        mhorRV3 = getActivity().findViewById(R.id.eveningList);
+        mhorRV4 = getActivity().findViewById(R.id.otherList);
         //设置一个线性布局管理器,因为要设置方向，就不采用匿名内部类的方式了
         //生成一个LinearLayoutManager的对象
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(TodayHobbyActivity.this);
-        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(TodayHobbyActivity.this);
-        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(TodayHobbyActivity.this);
-        LinearLayoutManager linearLayoutManager4 = new LinearLayoutManager(TodayHobbyActivity.this);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager4 = new LinearLayoutManager(getActivity());
         //设置这个线性布局管理器的方向,为水平方向
         linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
         linearLayoutManager2.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -210,15 +183,12 @@ public class TodayHobbyActivity extends AppCompatActivity {
         mhorRV3.setLayoutManager(linearLayoutManager3);
         mhorRV4.setLayoutManager(linearLayoutManager4);
         //设置适配器：Adapter
-        //mhorRV1.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this));
-        mhorRV1.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this, funclist1));
-        mhorRV2.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this, funclist2));
-        mhorRV3.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this, funclist3));
-        mhorRV4.setAdapter(new HorLinearAdapter(TodayHobbyActivity.this, funclist4));
+        //mhorRV1.setAdapter(new HorLinearAdapter(getActivity()));
+        mhorRV1.setAdapter(new HorLinearAdapter(getActivity(), funclist1));
+        mhorRV2.setAdapter(new HorLinearAdapter(getActivity(), funclist2));
+        mhorRV3.setAdapter(new HorLinearAdapter(getActivity(), funclist3));
+        mhorRV4.setAdapter(new HorLinearAdapter(getActivity(), funclist4));
         android.util.Log.i("result1", "finish");
-        ////////////////////////////////////////////////////////////////////////////////////////////////底部栏点击操作
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     @Override
@@ -236,5 +206,4 @@ public class TodayHobbyActivity extends AppCompatActivity {
             up = false;//刷新一次即可，不需要一直刷新
         }
     }
-
 }

@@ -15,13 +15,13 @@ public class LaunchActivity extends AppCompatActivity {
         setContentView(R.layout.launch_activity);
         Utils.setStatusBar(this, true, false);
 
-        Integer time =3000;    //设置等待时间，单位为毫秒
+        Integer time =1000;    //设置等待时间，单位为毫秒
         Handler handler = new Handler();
         //当计时结束时，跳转至主界面
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(LaunchActivity.this, TodayHobbyActivity.class));
+                startActivity(new Intent(LaunchActivity.this, MainActivity.class));
                 LaunchActivity.this.finish();
             }
         }, time);

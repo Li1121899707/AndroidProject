@@ -27,7 +27,8 @@
         </receiver>
 
         <activity android:name=".SettingActivity" />
-        <activity android:name=".TodayHobbyActivity"></activity>
+        <activity android:name=".TodayHobbyActivity" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

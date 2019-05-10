@@ -1,43 +1,45 @@
-package com.example.yantu.androidproject;
+package com.example.yantu.androidproject.Fragment;
 /*张立才*/
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.yantu.androidproject.R;
 import com.example.yantu.androidproject.Util.AlarmUtil;
 import com.example.yantu.androidproject.Util.Utils;
 
-public class SettingActivity extends AppCompatActivity {
+
+public class SettingFragment extends Fragment {
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_setting, container, false);
+    }
 
     private Switch notiSwitch;
     private Switch vibrateSwitch;
     private SharedPreferences sp;
+    
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting_activity);
-        Utils.setStatusBar(this, false, false);
-
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Utils.setStatusBar(getActivity(), false, false);
         init();
     }
 
     public void init() {
-        BottomNavigationView navigation = findViewById(R.id.navigationSetting);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_notifications);
+        notiSwitch = getActivity().findViewById(R.id.notiSwitch);
+        vibrateSwitch = getActivity().findViewById(R.id.vibrateSwitch);
 
-        notiSwitch = findViewById(R.id.notiSwitch);
-        vibrateSwitch = findViewById(R.id.vibrateSwitch);
-
-        sp = getSharedPreferences("settings", MODE_PRIVATE);
+        sp = getActivity().getSharedPreferences("settings", getActivity().MODE_PRIVATE);
 
         String notiChoice = sp.getString("notification_setting","0");
         String vibChoice = sp.getString("vibrate_setting","0");
@@ -53,26 +55,6 @@ public class SettingActivity extends AppCompatActivity {
         vibrateSwitch.setOnCheckedChangeListener(vibListener);
     }
 
-    // 底部状态栏监听事件（lysuzy）
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    Intent intent = new Intent(SettingActivity.this, TodayHobbyActivity.class);
-                    startActivity(intent);
-                    return true;
-                case R.id.navigation_dashboard:
-                    Intent intent2 = new Intent(SettingActivity.this, DailyHobbyActivity.class);
-                    startActivity(intent2);
-                    return true;
-                case R.id.navigation_notifications:
-                    return true;
-            }
-            return false;
-        }
-    };
 
     public CompoundButton.OnCheckedChangeListener switchListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
@@ -80,9 +62,9 @@ public class SettingActivity extends AppCompatActivity {
             if(isChecked){
                 vibrateSwitch.setClickable(true);
                 OpenNotification();
-                Toast.makeText(SettingActivity.this, "您已开启通知!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "您已打开通知!", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(SettingActivity.this, "您已关闭通知!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "您已关闭通知!", Toast.LENGTH_SHORT).show();
                 CloseNotification();
                 vibrateSwitch.setClickable(false);
             }
@@ -94,10 +76,10 @@ public class SettingActivity extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if(isChecked){
                 VibrateController("1");
-                Toast.makeText(SettingActivity.this, "您已开启震动!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "您已开启震动!", Toast.LENGTH_SHORT).show();
             }else{
                 VibrateController("0");
-                Toast.makeText(SettingActivity.this, "您已关闭震动!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "您已关闭震动!", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -107,7 +89,7 @@ public class SettingActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("notification_setting","1");
         editor.apply();
-        alarmUtil.openAlarm(SettingActivity.this, 4);
+        alarmUtil.openAlarm(getActivity(), 4);
     }
 
     public void CloseNotification(){
@@ -115,7 +97,7 @@ public class SettingActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("notification_setting","0");
         editor.apply();
-        alarmUtil.closeAlarm(SettingActivity.this);
+        alarmUtil.closeAlarm(getActivity());
     }
 
     public void VibrateController(String open){
@@ -123,5 +105,6 @@ public class SettingActivity extends AppCompatActivity {
         editor.putString("vibrate_setting",open);
         editor.apply();
     }
+
 
 }
