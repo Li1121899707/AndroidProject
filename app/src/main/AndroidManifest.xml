@@ -17,7 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditHobbyActivity" />
-        <activity android:name=".DailyHobbyActivity" />
         <activity android:name=".HobbyDetailAvtivity" />
 
         <receiver android:name=".Broadcast.AlarmReceiver">
@@ -25,10 +24,8 @@
                 <action android:name="intent_alarm_log" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".TodayHobbyActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".popAddActivity"></activity>
     </application>
 
 </manifest>

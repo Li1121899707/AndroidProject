@@ -262,7 +262,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
 
     // EditRecycleAdapter（图片列表）点击事件，实现EditRecycleAdapter类中的抽象方法
     @Override
-    public void onClick(View parent, int position) {
+    public void onClick(ImageView parent, int position) {
         Toast.makeText(this, "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
         iconPosition = position;
         String uriStr = "android.resource://com.example.yantu.androidproject/drawable/" + iconList.get(position);
