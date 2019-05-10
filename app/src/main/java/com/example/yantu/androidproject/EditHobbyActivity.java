@@ -233,7 +233,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
 
     public void createIconList() {
         iconList = new ArrayList<>();
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= 14; i++) {
             iconList.add("icon" + String.valueOf(i));
         }
 

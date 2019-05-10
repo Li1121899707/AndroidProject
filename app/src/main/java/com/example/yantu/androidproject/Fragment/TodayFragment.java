@@ -229,24 +229,21 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         /////////////////////////////////////////////////////////////////////////////////////////////打卡操作
         final String newImg =hobby.getHbImg();
         final int funcID = hobby.getHbId();
-        int signFlag = 0;              //是否已打卡
-        Calendar calendar = Calendar.getInstance();                   //获取系统的日期
-        //年
-        //calendar.set(Calendar.DATE, 1);
-        int year = calendar.get(Calendar.YEAR);
-        //月
-        int month = calendar.get(Calendar.MONTH) + 1;
-        //日
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        final String nowDate = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+        //java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        final String nowDate = sdf.format(new Date());
+        Log.i("result",nowDate);
 
+        Date date=new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_MONTH, -1);
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH) + 1;
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        //calendar.getTime();
-        final String lastDate = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+        date = calendar.getTime();
+        final String lastDate = sdf.format(date);
+        Log.i("result",lastDate);
+
+        // final String lastDate = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
         //Toast.makeText(getActivity(),nowDate+lastDate,Toast.LENGTH_SHORT).show();
         Button btn1 = (Button)view.findViewById(R.id.btn_1);
         final Button btn2 = (Button)view.findViewById(R.id.btn_2);
@@ -275,14 +272,14 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
                 db.insert("Clockin",null,values);
                 values.clear();
                 String beginPath = "android.resource://com.example.yantu.androidproject/drawable/";
-                hobby.setHbImg(beginPath + newImg+"_1");
+                hobby.setHbImg(beginPath + newImg + "_1");
                 Toast.makeText(getActivity(),"您已完成打卡",Toast.LENGTH_SHORT).show();
 
                 ContentValues values1 = new ContentValues();
                 Cursor cursor2 = db.query("Log", null, "hbId=?", new String[]{String.valueOf(funcID)}, null, null, null);
                 int total = 0;
                 int lgContinue = 0;
-                if(cursor2.moveToFirst()){
+                if(cursor2.moveToFirst()){ // 必须加！！！
                     Log.i("result", cursor2.getColumnIndex("lgTotal") + "  cursor2");
                     total=cursor2.getInt(cursor2.getColumnIndex("lgTotal"));
                     lgContinue=cursor2.getInt(cursor2.getColumnIndex("lgContinue"));
