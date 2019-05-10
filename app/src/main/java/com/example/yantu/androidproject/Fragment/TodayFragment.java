@@ -50,7 +50,7 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     TextView lastDay;
     MyDatabaseHelper dbHelper;
     Boolean up = false;//默认false不刷新
-    private Set<Hobby> hbSet;
+    private Set<Integer> hbSet;
     private List<Hobby> funclist1 ;
     private List<Hobby> funclist2 ;
     private List<Hobby> funclist3 ;
@@ -185,6 +185,8 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         updateList(funclist2);
         updateList(funclist3);
         updateList(funclist4);
+
+        Log.i("result", funclist4.get(0).getHbImg());
 
 
         mhorRV1 = getActivity().findViewById(R.id.morningList);
@@ -348,16 +350,11 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         final String nowDate = sdf.format(new Date());
 
-        Cursor cursor = db.rawQuery("select Clockin.hbId as id, hbName, hbTime, hbCycle, hbIcon, ciDate from Clockin, Hobby where Hobby.hbId = Clockin.hbid and Clockin.ciDate = ?", new String[]{nowDate});
+        //Cursor cursor = db.rawQuery("select Clockin.hbId as id, hbName, hbTime, hbCycle, hbIcon, ciDate from Clockin, Hobby where Hobby.hbId = Clockin.hbid and Clockin.ciDate = ?", new String[]{nowDate});
+        Cursor cursor = db.query("Clockin", null, "ciDate=?", new String[]{nowDate}, null, null, null);
         if(cursor.moveToFirst()){
             do {
-                Hobby hobby = new Hobby();
-                hobby.setHbId(cursor.getInt(cursor.getColumnIndex("hbId")));
-                hobby.setHbName(cursor.getString(cursor.getColumnIndex("hbName")));
-                hobby.setHbImg(cursor.getString(cursor.getColumnIndex("hbIcon")));
-                hobby.setHbTime(cursor.getString(cursor.getColumnIndex("hbTime")));
-                hobby.setHbCycle(cursor.getInt(cursor.getColumnIndex("hbCycle")));
-                hbSet.add(hobby);
+                hbSet.add(cursor.getInt(cursor.getColumnIndex("hbId")));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -366,14 +363,13 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     public void updateList(List<Hobby> list){
         for(int i = 0; i<list.size(); i++ ){
             Hobby hobby = list.get(i);
-            if(hbSet.contains(hobby)){
-                String newImg = "android.resource://com.example.yantu.androidproject/drawable/" + hobby.getHbImg() + "_1";
-                hbSet.remove(hobby);
+            if(hbSet.contains(hobby.getHbId())){
+                String newImg = hobby.getHbImg() + "_1";
                 hobby.setHbImg(newImg);
-                hbSet.add(hobby);
+                list.set(i, hobby);
+                Log.i("result", list.get(i).getHbImg());
             }
         }
     }
-
 
 }
