@@ -86,11 +86,10 @@ public class AlarmReceiver extends BroadcastReceiver {
             manager.notify(alarmChoice, notification);
         }
 
-        //因为setWindow只执行一次，所以要重新定义闹钟实现循环。
+        //因为set函数只执行一次，所以要重新定义闹钟实现循环。
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             AlarmUtil alarmUtil = new AlarmUtil();
             alarmUtil.openAlarm(context, alarmChoice);
-            Log.i("result", "reset alarm");
         }
     }
 

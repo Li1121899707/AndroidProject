@@ -80,14 +80,14 @@ public class SettingActivity extends AppCompatActivity {
 
     public void OpenNotification(){
         AlarmUtil alarmUtil = new AlarmUtil();
-        alarmUtil.openAlarm(SettingActivity.this, 1);
+        alarmUtil.openAlarm(SettingActivity.this, 4);
     }
 
     public void CloseNotification(){
         AlarmUtil alarmUtil = new AlarmUtil();
         alarmUtil.canalAlarm(SettingActivity.this, INTENT_ALARM_LOG,1);
-//        alarmUtil.canalAlarm(SettingActivity.this, INTENT_ALARM_LOG,2);
-//        alarmUtil.canalAlarm(SettingActivity.this, INTENT_ALARM_LOG,3);
+        alarmUtil.canalAlarm(SettingActivity.this, INTENT_ALARM_LOG,2);
+        alarmUtil.canalAlarm(SettingActivity.this, INTENT_ALARM_LOG,3);
     }
 
 }

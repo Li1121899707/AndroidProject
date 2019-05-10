@@ -18,17 +18,12 @@ import static android.app.AlarmManager.INTERVAL_DAY;
 public class AlarmUtil {
 
     // 设置Alarm
-    public void setAlarmTime(Context context, long timeInMillis, String action, long delay, int requestCode) {
+    public void setAlarmTime(Context context, long timeInMillis, String action, int requestCode) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(action);
         intent.setClass(context, AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) // 安卓4.4以上
-            am.setWindow(AlarmManager.RTC_WAKEUP, timeInMillis, delay, sender);
-        else
-            am.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, delay, sender);
-
+        am.set(AlarmManager.RTC_WAKEUP, timeInMillis, sender);
         android.util.Log.i("result", "startAlarm");
     }
 
@@ -44,31 +39,46 @@ public class AlarmUtil {
     }
 
     public void openAlarm(Context context, int alarmChoice) {
+        Calendar currCalendar = Calendar.getInstance();
         android.util.Log.i("result", "alarmchoice" + alarmChoice);
         if(alarmChoice == 4 || alarmChoice == 1){
             Calendar calendarMorning = Calendar.getInstance();
             calendarMorning.set(Calendar.HOUR_OF_DAY, 7);
             calendarMorning.set(Calendar.MINUTE, 0);
             calendarMorning.set(Calendar.SECOND, 0);
-            setAlarmTime(context, calendarMorning.getTimeInMillis(), "1", 60*60*24*1000, 1);
+
+            // 如果当前时间大于闹钟时间，则为过去的闹钟。定义新的闹钟需要加上一天，因此使用add方法
+            // 如果alarmChoice不为4，说明闹钟刚刚响过，应该定义新一天的闹钟。
+            if(currCalendar.compareTo(calendarMorning) > 0 || alarmChoice == 1){
+                calendarMorning.add(Calendar.DATE, 1);
+            }
+            setAlarmTime(context, calendarMorning.getTimeInMillis(), "1", 1);
             android.util.Log.i("result", "morning");
         }
-//        if(alarmChoice == 4 || alarmChoice == 2){
-//            Calendar calendarAfternoon = Calendar.getInstance();
-//            calendarAfternoon.set(Calendar.HOUR_OF_DAY, 13);
-//            calendarAfternoon.set(Calendar.MINUTE, 0);
-//            calendarAfternoon.set(Calendar.SECOND, 0);
-//            setAlarmTime(context, calendarAfternoon.getTimeInMillis(), "2", INTERVAL_DAY, 2);
-//            android.util.Log.i("result", "afternoon");
-//        }
-//        if(alarmChoice == 4 || alarmChoice == 3){
-//            Calendar calendarNoon = Calendar.getInstance();
-//            calendarNoon.set(Calendar.HOUR_OF_DAY, 19);
-//            calendarNoon.set(Calendar.MINUTE, 0);
-//            calendarNoon.set(Calendar.SECOND, 0);
-//            setAlarmTime(context, calendarNoon.getTimeInMillis(), "3", INTERVAL_DAY, 3);
-//            android.util.Log.i("result", "noon");
-//        }
+        if(alarmChoice == 4 || alarmChoice == 2){
+            Calendar calendarAfternoon = Calendar.getInstance();
+            calendarAfternoon.set(Calendar.HOUR_OF_DAY, 13);
+            calendarAfternoon.set(Calendar.MINUTE, 0);
+            calendarAfternoon.set(Calendar.SECOND, 0);
+
+            if(currCalendar.compareTo(calendarAfternoon) > 0 || alarmChoice == 2){
+                calendarAfternoon.add(Calendar.DATE, 1);
+            }
+            setAlarmTime(context, calendarAfternoon.getTimeInMillis(), "2", 2);
+            android.util.Log.i("result", "afternoon");
+        }
+        if(alarmChoice == 4 || alarmChoice == 3){
+            Calendar calendarNoon = Calendar.getInstance();
+            calendarNoon.set(Calendar.HOUR_OF_DAY, 19);
+            calendarNoon.set(Calendar.MINUTE, 0);
+            calendarNoon.set(Calendar.SECOND, 0);
+
+            if(currCalendar.compareTo(calendarNoon) > 0 || alarmChoice == 3){
+                calendarNoon.add(Calendar.DATE, 1);
+            }
+            setAlarmTime(context, calendarNoon.getTimeInMillis(), "3",  3);
+            android.util.Log.i("result", "noon");
+        }
         if(alarmChoice == 0){
             Toast.makeText(context, "无法开启通知！",Toast.LENGTH_SHORT).show();
         }
