@@ -14,6 +14,7 @@ import com.example.yantu.androidproject.SettingActivity;
 import java.util.Calendar;
 
 import static android.app.AlarmManager.INTERVAL_DAY;
+import static com.example.yantu.androidproject.Broadcast.AlarmReceiver.INTENT_ALARM_LOG;
 
 public class AlarmUtil {
 
@@ -82,6 +83,12 @@ public class AlarmUtil {
         if(alarmChoice == 0){
             Toast.makeText(context, "无法开启通知！",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void closeAlarm(Context context){
+        canalAlarm(context, INTENT_ALARM_LOG,1);
+        canalAlarm(context, INTENT_ALARM_LOG,2);
+        canalAlarm(context, INTENT_ALARM_LOG,3);
     }
 
 }

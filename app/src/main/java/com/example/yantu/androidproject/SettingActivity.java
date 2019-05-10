@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -26,6 +27,7 @@ import static com.example.yantu.androidproject.Broadcast.AlarmReceiver.INTENT_AL
 public class SettingActivity extends AppCompatActivity {
 
     private Switch notiSwitch;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +36,23 @@ public class SettingActivity extends AppCompatActivity {
         init();
     }
 
-    public void init(){
+    public void init() {
         BottomNavigationView navigation = findViewById(R.id.navigationSetting);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_notifications);
 
         notiSwitch = findViewById(R.id.notiSwitch);
         notiSwitch.setOnCheckedChangeListener(switchListener);
-    }
 
+        sp = getSharedPreferences("settings", MODE_PRIVATE);
+
+        String notification = sp.getString("notification_setting","0");
+        if(notification.equals("1"))
+            notiSwitch.setChecked(true);
+        else
+            notiSwitch.setChecked(false);
+
+    }
 
     // 底部状态栏监听事件（lysuzy）
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -80,14 +90,18 @@ public class SettingActivity extends AppCompatActivity {
 
     public void OpenNotification(){
         AlarmUtil alarmUtil = new AlarmUtil();
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("notification_setting","1");
+        editor.apply();
         alarmUtil.openAlarm(SettingActivity.this, 4);
     }
 
     public void CloseNotification(){
         AlarmUtil alarmUtil = new AlarmUtil();
-        alarmUtil.canalAlarm(SettingActivity.this, INTENT_ALARM_LOG,1);
-        alarmUtil.canalAlarm(SettingActivity.this, INTENT_ALARM_LOG,2);
-        alarmUtil.canalAlarm(SettingActivity.this, INTENT_ALARM_LOG,3);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("notification_setting","0");
+        editor.apply();
+        alarmUtil.closeAlarm(SettingActivity.this);
     }
 
 }
