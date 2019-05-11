@@ -20,6 +20,7 @@ import com.example.yantu.androidproject.Adapter.DailyRecycleAdapter;
 import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
 import com.example.yantu.androidproject.EditHobbyActivity;
 import com.example.yantu.androidproject.Entity.Hobby;
+import com.example.yantu.androidproject.Entity.Log;
 import com.example.yantu.androidproject.HobbyDetailAvtivity;
 import com.example.yantu.androidproject.R;
 import com.example.yantu.androidproject.Util.Utils;
@@ -57,6 +58,7 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
 
         addHobby.setOnClickListener(addHobbyListener);
 
+        android.util.Log.i("result", "create Daily");
         createDatabase();
         queryAllFromHobby();
         addToList();
@@ -129,16 +131,19 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
     public void onPause() {
         super.onPause();
         up = true;//不可见的时候将刷新开启
-        android.util.Log.i("result","暂停");
+        android.util.Log.i("result","Daily 暂停");
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        android.util.Log.i("result","刷新");
+        android.util.Log.i("result","Daily 刷新");
         if (up) {
             //（方法）;//向服务器发送请求
+            hobbyList.clear();
+            queryAllFromHobby();
+            addToList();
             up = false;//刷新一次即可，不需要一直刷新
         }
     }

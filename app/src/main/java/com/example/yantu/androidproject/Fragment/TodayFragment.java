@@ -49,7 +49,7 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     //private TextView mTextMessage;
     TextView lastDay;
     MyDatabaseHelper dbHelper;
-    Boolean up = false;//默认false不刷新
+    Boolean up2 = false;//默认false不刷新
     private Set<Integer> hbSet;
     private List<Hobby> funclist1 ;
     private List<Hobby> funclist2 ;
@@ -113,13 +113,18 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         return 0;
     }
 
-    public void init(){
+    public void init() {
 
         hbSet = new HashSet<>();
         funclist1 = new ArrayList<>();
         funclist2 = new ArrayList<>();
         funclist3 = new ArrayList<>();
         funclist4 = new ArrayList<>();
+        refresh();
+
+    }
+
+    public void refresh(){
         ///////////////////////////////////////////////////////////////////////////////////////////////////获取倒计时
         Calendar calendar = Calendar.getInstance();                   //获取系统的日期
         //年
@@ -231,16 +236,23 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     @Override
     public void onPause() {
         super.onPause();
-        up = true;//不可见的时候将刷新开启
+        up2 = true;//不可见的时候将刷新开启
+        android.util.Log.i("result","Today 暂停");
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        if (up) {
+        android.util.Log.i("result","Today 暂停");
+        if (up2) {
             //（方法）;//向服务器发送请求
-            up = false;//刷新一次即可，不需要一直刷新
+            funclist1.clear();
+            funclist2.clear();
+            funclist3.clear();
+            funclist4.clear();
+            refresh();
+            up2 = false;//刷新一次即可，不需要一直刷新
         }
     }
 
@@ -265,7 +277,7 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         Date date=new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        calendar.add(Calendar.DATE, -1);
         date = calendar.getTime();
         final String lastDate = sdf.format(date);
         Log.i("result",lastDate);
@@ -318,7 +330,7 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
                 }
                 cursor2.close();
 
-                Cursor cursor3 = db.query("Clockin", null, "ciDate=?", new String[]{lastDate}, null, null, null);
+                Cursor cursor3 = db.query("Clockin", null, "hbId=? and ciDate=?", new String[]{String.valueOf(funcID),lastDate}, null, null, null);
                 if(cursor3.moveToFirst()){
                     values1.put("lgTotal", total+1);
                     values1.put("lgContinue", lgContinue+1);
