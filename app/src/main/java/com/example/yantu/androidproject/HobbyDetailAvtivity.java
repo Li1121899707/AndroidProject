@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.LineBackgroundSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -248,10 +249,24 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     public View.OnClickListener backListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(HobbyDetailAvtivity.this, MainActivity.class);
-            intent.putExtra("id",1);
-            startActivity(intent);
-            finish();
+            returnMainActivity();
         }
     };
+
+    public void returnMainActivity(){
+        Intent intent = new Intent(HobbyDetailAvtivity.this, MainActivity.class);
+        intent.putExtra("id",1);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //点击完返回键，执行的动作
+            returnMainActivity();
+        }
+        return true;
+
+    }
 }
