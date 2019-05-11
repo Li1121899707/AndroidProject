@@ -186,7 +186,7 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         updateList(funclist3);
         updateList(funclist4);
 
-        Log.i("result", funclist4.get(0).getHbImg());
+        //Log.i("result", funclist4.get(0).getHbImg());
 
 
         mhorRV1 = getActivity().findViewById(R.id.morningList);

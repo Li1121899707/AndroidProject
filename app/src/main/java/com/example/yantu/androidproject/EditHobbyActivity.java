@@ -52,6 +52,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_hobby_activity);
+        // 标题栏沉浸
         Utils.setStatusBar(this, false, false);
 
         // 接收参数，添加功能只包含choice参数，修改还包含回显数据
@@ -242,7 +243,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
         //设置这个线性布局管理器的方向,为水平方向
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         EditRecycleAdapter editRecycleAdapter = new EditRecycleAdapter(this, iconList);
-        // 设置监听事件。为创建的类的对象赋监听事件。
+        // 设置监听事件。this指 OnItemClickListener对象，由于该Activity实现了该接口，因此将该类传入即可。(new EditHobbyActivity())
         editRecycleAdapter.setOnItemClickListener(this);
         //设置mHorRV的线性布局管理器
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -262,13 +263,14 @@ public class EditHobbyActivity extends AppCompatActivity implements
 
     // EditRecycleAdapter（图片列表）点击事件，实现EditRecycleAdapter类中的抽象方法
     @Override
-    public void onClick(ImageView parent, int position) {
+    public void editImageViewOnClick(ImageView parent, int position) {
         Toast.makeText(this, "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
         iconPosition = position;
         String uriStr = "android.resource://com.example.yantu.androidproject/drawable/" + iconList.get(position);
         selectedIcon.setImageURI(Uri.parse(uriStr));
     }
 
+    // 返回主界面
     public void returnMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("id",1);

@@ -17,9 +17,14 @@ public class AlarmUtil {
 
     // 设置Alarm
     private void setAlarmTime(Context context, long timeInMillis, String action, int requestCode) {
+        // AlarmManager是系统服务中的定时服务
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(action);
+        // Android O以上版本需要显式声明Broadcast发送方与接收方。
         intent.setClass(context, AlarmReceiver.class);
+        // PendingIntent是延时Intent，getBroadcast为打开广播组件
+        // requestCode为唯一标识，否则alarm会覆盖。
+        // 如果有两个通知，FLAG_CANCEL_CURRENT会令第一个失效，显示第二个。FLAG_UPDATE_CURRENT会覆盖第一个。
         PendingIntent sender = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         am.set(AlarmManager.RTC_WAKEUP, timeInMillis, sender);
         android.util.Log.i("result", "startAlarm");
@@ -29,9 +34,9 @@ public class AlarmUtil {
     private void canalAlarm(Context context, String action, int requestCode) {
         Intent intent = new Intent(action);
         intent.setClass(context, AlarmReceiver.class);
-        PendingIntent pi = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent sender = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        am.cancel(pi);
+        am.cancel(sender);
         android.util.Log.i("result", "closeAlarm" + requestCode);
     }
 
@@ -40,8 +45,8 @@ public class AlarmUtil {
         android.util.Log.i("result", "alarmchoice" + alarmChoice);
         if(alarmChoice == 4 || alarmChoice == 1){
             Calendar calendarMorning = Calendar.getInstance();
-            calendarMorning.set(Calendar.HOUR_OF_DAY, 8);
-            calendarMorning.set(Calendar.MINUTE, 0);
+            calendarMorning.set(Calendar.HOUR_OF_DAY, 7);
+            calendarMorning.set(Calendar.MINUTE, 50);
             calendarMorning.set(Calendar.SECOND, 0);
 
             // 如果当前时间大于闹钟时间，则为过去的闹钟。定义新的闹钟需要加上一天，因此使用add方法
@@ -54,8 +59,8 @@ public class AlarmUtil {
         }
         if(alarmChoice == 4 || alarmChoice == 2){
             Calendar calendarAfternoon = Calendar.getInstance();
-            calendarAfternoon.set(Calendar.HOUR_OF_DAY, 14);
-            calendarAfternoon.set(Calendar.MINUTE, 31);
+            calendarAfternoon.set(Calendar.HOUR_OF_DAY, 13);
+            calendarAfternoon.set(Calendar.MINUTE, 50);
             calendarAfternoon.set(Calendar.SECOND, 0);
 
             if(currCalendar.compareTo(calendarAfternoon) > 0 || alarmChoice == 2){
@@ -66,8 +71,8 @@ public class AlarmUtil {
         }
         if(alarmChoice == 4 || alarmChoice == 3){
             Calendar calendarNoon = Calendar.getInstance();
-            calendarNoon.set(Calendar.HOUR_OF_DAY, 20);
-            calendarNoon.set(Calendar.MINUTE, 0);
+            calendarNoon.set(Calendar.HOUR_OF_DAY, 19);
+            calendarNoon.set(Calendar.MINUTE, 50);
             calendarNoon.set(Calendar.SECOND, 0);
 
             if(currCalendar.compareTo(calendarNoon) > 0 || alarmChoice == 3){
