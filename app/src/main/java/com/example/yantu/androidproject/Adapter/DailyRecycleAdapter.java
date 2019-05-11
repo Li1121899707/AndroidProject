@@ -36,7 +36,10 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
         this.mContext = context;
         this.hbList = hbList;
         mLayoutInflater = LayoutInflater.from(context);
+    }
 
+    public void setHbList(List<Hobby> hbList){
+        this.hbList = hbList;
     }
 
     // 创建数据库并查询所需数据

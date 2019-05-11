@@ -40,6 +40,7 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
     private MyDatabaseHelper dbHelper;
     private List<Hobby> hobbyList;
     Boolean up = false;//默认false不刷新
+    private DailyRecycleAdapter adapter;
 
 
     @Override
@@ -91,18 +92,19 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
     }
 
     public void addToList(){
+        android.util.Log.i("result", "addtolist");
         // 设置线性布局管理器
         rvDaily.addItemDecoration(new MyDecoration());
         //添加分割线
         rvDaily.setLayoutManager(new LinearLayoutManager(getContext()));
         // 设置Adapter
-        DailyRecycleAdapter adapter = new DailyRecycleAdapter(getContext(), hobbyList);
+        adapter = new DailyRecycleAdapter(getContext(), hobbyList);
         // 添加监听事件
         adapter.setOnItemClickListener(this);
         rvDaily.setAdapter(adapter);
-
-
     }
+
+
 
     class MyDecoration extends RecyclerView.ItemDecoration{
         @Override
@@ -125,6 +127,7 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
         Hobby hobby = hobbyList.get(position);
         intent.putExtra("Hobby", hobby);
         startActivity(intent);
+        getActivity().finish();
     }
 
     @Override
@@ -141,9 +144,6 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
         android.util.Log.i("result","Daily 刷新");
         if (up) {
             //（方法）;//向服务器发送请求
-            hobbyList.clear();
-            queryAllFromHobby();
-            addToList();
             up = false;//刷新一次即可，不需要一直刷新
         }
     }
@@ -154,6 +154,7 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
             Intent intent = new Intent(getContext(), EditHobbyActivity.class);
             intent.putExtra("choice","insert");
             startActivity(intent);
+            getActivity().finish();
         }
     };
 

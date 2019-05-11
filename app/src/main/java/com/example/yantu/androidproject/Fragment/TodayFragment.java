@@ -247,11 +247,11 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         android.util.Log.i("result","Today 暂停");
         if (up2) {
             //（方法）;//向服务器发送请求
-            funclist1.clear();
-            funclist2.clear();
-            funclist3.clear();
-            funclist4.clear();
-            refresh();
+//            funclist1.clear();
+//            funclist2.clear();
+//            funclist3.clear();
+//            funclist4.clear();
+//            refresh();
             up2 = false;//刷新一次即可，不需要一直刷新
         }
     }

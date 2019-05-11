@@ -248,6 +248,9 @@ public class HobbyDetailAvtivity extends AppCompatActivity {
     public View.OnClickListener backListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Intent intent = new Intent(HobbyDetailAvtivity.this, MainActivity.class);
+            intent.putExtra("id",1);
+            startActivity(intent);
             finish();
         }
     };
