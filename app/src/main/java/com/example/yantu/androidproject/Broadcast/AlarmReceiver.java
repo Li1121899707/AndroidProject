@@ -33,6 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         init(context);
 
+        Log.i("alarm", "receive alarm ");
         String action = intent.getAction();
         assert action != null;
         int alarmChoice = Integer.valueOf(action);
@@ -58,14 +59,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         // 安卓版本高于8.0需要使用 “渠道”
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //创建通知渠道样例
             Toast.makeText(context, "Alarm", Toast.LENGTH_SHORT).show();
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel mChannel = new NotificationChannel(channelId, name, importance);
             mChannel.setDescription(description);//渠道描述
             mChannel.enableLights(true);//是否显示通知指示灯
             mChannel.enableVibration(vibBool);//是否振动
-            PendingIntent pIntent = PendingIntent.getActivity(context, 1, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationManager notificationManager = (NotificationManager)
                     context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(mChannel);
@@ -75,12 +74,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                     setContentTitle(title).
                     setContentText(content).
                     setNumber(3);
-            builder.setContentIntent(pIntent);
-            builder.setFullScreenIntent(pIntent, true);
-            builder.setVisibility(Notification.VISIBILITY_PUBLIC);
-            builder.setContentIntent(pIntent);
             builder.setAutoCancel(true);
-            notificationManager.notify(1, builder.build());
+            notificationManager.notify(alarmChoice, builder.build());
+            Log.i("alarm", "ring alarm " + alarmChoice);
         } else {
             Toast.makeText(context, "Alarm2", Toast.LENGTH_SHORT).show();
             Notification notification =
@@ -101,6 +97,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             AlarmUtil alarmUtil = new AlarmUtil();
             alarmUtil.openAlarm(context, alarmChoice);
+            Log.i("alarm", "reset alarm " + alarmChoice);
         }
     }
 

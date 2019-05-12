@@ -87,9 +87,9 @@ public class AlarmUtil {
     }
 
     public void closeAlarm(Context context){
-        canalAlarm(context, INTENT_ALARM_LOG,1);
-        canalAlarm(context, INTENT_ALARM_LOG,2);
-        canalAlarm(context, INTENT_ALARM_LOG,3);
+        canalAlarm(context, "1",1);
+        canalAlarm(context, "2",2);
+        canalAlarm(context, "3",3);
     }
 
 }
