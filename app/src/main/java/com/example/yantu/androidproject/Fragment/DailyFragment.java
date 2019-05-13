@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.yantu.androidproject.Adapter.DailyRecycleAdapter;
+import com.example.yantu.androidproject.DBHelper.MyDB;
 import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
 import com.example.yantu.androidproject.EditHobbyActivity;
 import com.example.yantu.androidproject.Entity.Hobby;
@@ -27,6 +29,7 @@ import com.example.yantu.androidproject.Util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DailyFragment extends Fragment implements DailyRecycleAdapter.DailyOnItemClickListener {
 
@@ -37,10 +40,8 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
     }
 
     private RecyclerView rvDaily;
-    private MyDatabaseHelper dbHelper;
     private List<Hobby> hobbyList;
     Boolean up = false;//默认false不刷新
-    private DailyRecycleAdapter adapter;
 
 
     @Override
@@ -60,35 +61,10 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
         addHobby.setOnClickListener(addHobbyListener);
 
         android.util.Log.i("result", "create Daily");
-        createDatabase();
-        queryAllFromHobby();
+        MyDB myDB = new MyDB();
+        myDB.createDatabase(getActivity());
+        hobbyList = myDB.queryAllFromHobby();
         addToList();
-    }
-
-    // 创建数据库（lysuzy）
-    public void createDatabase() {
-        dbHelper = new MyDatabaseHelper(getActivity(), "yantu.db", null, 1);
-        dbHelper.getWritableDatabase();
-    }
-
-
-
-    // 查询所有hobby，存入hobbyList
-    public void queryAllFromHobby(){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor cursor = db.query("Hobby", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Hobby hobby = new Hobby();
-                hobby.setHbId(cursor.getInt(cursor.getColumnIndex("hbId")));
-                hobby.setHbName(cursor.getString(cursor.getColumnIndex("hbName")));
-                hobby.setHbImg(cursor.getString(cursor.getColumnIndex("hbIcon")));
-                hobby.setHbTime(cursor.getString(cursor.getColumnIndex("hbTime")));
-                hobby.setHbCycle(cursor.getInt(cursor.getColumnIndex("hbCycle")));
-                hobbyList.add(hobby);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
     }
 
     public void addToList(){
@@ -98,13 +74,11 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
         //添加分割线
         rvDaily.setLayoutManager(new LinearLayoutManager(getContext()));
         // 设置Adapter
-        adapter = new DailyRecycleAdapter(getContext(), hobbyList);
+        DailyRecycleAdapter adapter = new DailyRecycleAdapter(getContext(), hobbyList);
         // 添加监听事件
         adapter.setOnItemClickListener(this);
         rvDaily.setAdapter(adapter);
     }
-
-
 
     class MyDecoration extends RecyclerView.ItemDecoration{
         @Override
@@ -113,7 +87,6 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
             outRect.set(getResources().getDimensionPixelOffset(R.dimen.dimenForDaily),getResources().getDimensionPixelOffset(R.dimen.dimenForDaily),getResources().getDimensionPixelOffset(R.dimen.dimenForDaily),getResources().getDimensionPixelOffset(R.dimen.dimenForDaily));
         }
     }
-
 
     // ② 实现接口
     @Override
@@ -127,7 +100,9 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
         Hobby hobby = hobbyList.get(position);
         intent.putExtra("Hobby", hobby);
         startActivity(intent);
-        getActivity().finish();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getActivity()).finish();
+        }
     }
 
     @Override
@@ -154,7 +129,9 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
             Intent intent = new Intent(getContext(), EditHobbyActivity.class);
             intent.putExtra("choice","insert");
             startActivity(intent);
-            getActivity().finish();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                Objects.requireNonNull(getActivity()).finish();
+            }
         }
     };
 

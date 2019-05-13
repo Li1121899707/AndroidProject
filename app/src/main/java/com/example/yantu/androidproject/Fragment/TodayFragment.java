@@ -43,10 +43,8 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     private RecyclerView mhorRV2;
     private RecyclerView mhorRV3;
     private RecyclerView mhorRV4;
-    private ImageView funcImg;
     private String newImg;
     private Integer funcID;
-    //private TextView mTextMessage;
     TextView lastDay;
     MyDatabaseHelper dbHelper;
     Boolean up2 = false;//默认false不刷新
@@ -55,7 +53,6 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
     private List<Hobby> funclist2 ;
     private List<Hobby> funclist3 ;
     private List<Hobby> funclist4 ;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +66,6 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         Utils.setStatusBar(getActivity(), false, false);
 
         init();
-
     }
 
     public long dateDiff(String startTime, String endTime, String format) {
@@ -191,9 +187,6 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         updateList(funclist3);
         updateList(funclist4);
 
-        //Log.i("result", funclist4.get(0).getHbImg());
-
-
         mhorRV1 = getActivity().findViewById(R.id.morningList);
         mhorRV2 = getActivity().findViewById(R.id.noonList);
         mhorRV3 = getActivity().findViewById(R.id.eveningList);
@@ -240,18 +233,12 @@ public class TodayFragment extends Fragment implements HorLinearAdapter.OnItemCl
         android.util.Log.i("result","Today 暂停");
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         android.util.Log.i("result","Today 暂停");
         if (up2) {
             //（方法）;//向服务器发送请求
-//            funclist1.clear();
-//            funclist2.clear();
-//            funclist3.clear();
-//            funclist4.clear();
-//            refresh();
             up2 = false;//刷新一次即可，不需要一直刷新
         }
     }

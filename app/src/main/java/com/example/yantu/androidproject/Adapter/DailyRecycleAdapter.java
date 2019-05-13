@@ -26,7 +26,6 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
     private LayoutInflater mLayoutInflater;
     private MyDatabaseHelper dbHelper;
     private SQLiteDatabase db;
-    //private List<Map<String, String>> list;
     private List<Hobby> hbList;
     private DailyOnItemClickListener mOnItemClickListener = null;
 
@@ -38,13 +37,6 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void setHbList(List<Hobby> hbList){
-        this.hbList = hbList;
-    }
-
-    // 创建数据库并查询所需数据
-
-
     @Override
     public DailyRecycleAdapter.LinearViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new LinearViewHolder(mLayoutInflater.inflate(R.layout.item_recycle_daily,viewGroup,false));
@@ -53,26 +45,12 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
     //通过holder设置TextView与button的内容
     @Override
     public void onBindViewHolder(final DailyRecycleAdapter.LinearViewHolder holder, final int position) {
-//        for (Map<String, String> m : list)
-//        {
-//            if (m.containsKey("id"))
-//            {
-//
-//            }
-//        }
-//        viewHolder.itemView.setId(values.getAsInteger("id"));
-//        viewHolder.textView.setText(values.getAsString("name") + " " + values.getAsString("time"));
-//        //此处直接将数字转为字符串，可能出错
-//        viewHolder.button.setId(values.getAsInteger("id"));
-//        viewHolder.button.setText(values.getAsInteger("cycle"));
-//        if (viewHolder.button.getText().equals("0"))
-//        {
-//            viewHolder.button.setEnabled(false);
-//        }
-
         final Hobby hobby = hbList.get(position);
         holder.textView.setText(hobby.getHbName());
         holder.button.setText(String.valueOf(hobby.getHbCycle()));
+        if(hobby.getHbCycle() == 0){
+            holder.button.setVisibility(View.INVISIBLE);
+        }
 
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,8 +79,6 @@ public class DailyRecycleAdapter extends RecyclerView.Adapter<DailyRecycleAdapte
 
     @Override
     public int getItemCount() {
-        //java.lang.NullPointerException: Attempt to invoke interface method 'int java.util.List.size()' on a null object reference
-        //return list.size();
         return hbList == null ? 0 : hbList.size();
     }
 
