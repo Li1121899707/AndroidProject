@@ -83,19 +83,6 @@ public class EditHobbyActivity extends AppCompatActivity implements
         selectedIcon = findViewById(R.id.selectedIcon);
         Button btnEditHobby = findViewById(R.id.btnEditHobby);
 
-        // 动态改变标题
-        if (choice.equals("update")) {
-            tvHobbyTitle.setText("修改习惯");
-            if(hobby.getHbName() != null)
-                etHobbyName.setText(hobby.getHbName());
-            if(hobby.getHbCycle() != null)
-                etHobbyCycle.setText(String.valueOf(hobby.getHbCycle()));
-            btnEditHobby.setText("修改");
-        } else if (choice.equals("add")) {
-            tvHobbyTitle.setText("添加习惯");
-            btnEditHobby.setText("添加");
-        }
-
         // button
         btnEditHobby.setOnClickListener(editListener);
         findViewById(R.id.btnResetHobby).setOnClickListener(resetListener);
@@ -109,6 +96,25 @@ public class EditHobbyActivity extends AppCompatActivity implements
 
         // 创建图标列表
         createIconList();
+
+        // 动态改变标题
+        if (choice.equals("update")) {
+            tvHobbyTitle.setText("修改习惯");
+            if(hobby.getHbName() != null)
+                etHobbyName.setText(hobby.getHbName());
+            if(hobby.getHbCycle() != null)
+                etHobbyCycle.setText(String.valueOf(hobby.getHbCycle()));
+            btnEditHobby.setText("修改");
+            if(hobby.getHbTime() != null){
+                int hbTime = Integer.valueOf(hobby.getHbTime());
+                spTime.setSelection(hbTime, true);
+                spinnerPosition = hbTime;
+            }
+
+        } else if (choice.equals("add")) {
+            tvHobbyTitle.setText("添加习惯");
+            btnEditHobby.setText("添加");
+        }
 
         // 创建数据库
         myDB = new MyDB();
