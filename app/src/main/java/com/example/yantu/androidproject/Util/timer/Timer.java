@@ -107,20 +107,10 @@ public class Timer {
 
         if (interrupt) {
             if (interruptCallback != null)
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        interruptCallback.run(runCounter.getHours(), runCounter.getMinutes(), runCounter.getSeconds());
-                    }
-                }).start();
+                interruptCallback.run(runCounter.getHours(), runCounter.getMinutes(), runCounter.getSeconds());
         } else {
             if (postCallback != null)
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        postCallback.run(runCounter.getHours(), runCounter.getMinutes(), runCounter.getSeconds());
-                    }
-                }).start();
+                postCallback.run(runCounter.getHours(), runCounter.getMinutes(), runCounter.getSeconds());
         }
 
         executor.shutdownNow();

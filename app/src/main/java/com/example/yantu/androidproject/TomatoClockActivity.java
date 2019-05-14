@@ -1,5 +1,6 @@
 package com.example.yantu.androidproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -196,18 +197,23 @@ public class TomatoClockActivity extends AppCompatActivity {
     }
 
     private void changeState() {
-        if (state == 1) {
-            state = 0;
-            changeIntoTomato();
-        } else if (state == 0) {
-            if (stages >= totalStage) {
-                state = 2;
-                changeIntoEnd();
-            } else {
-                state = 1;
-                changeIntoBreak();
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (state == 1) {
+                    state = 0;
+                    changeIntoTomato();
+                } else if (state == 0) {
+                    if (stages >= totalStage) {
+                        state = 2;
+                        changeIntoEnd();
+                    } else {
+                        state = 1;
+                        changeIntoBreak();
+                    }
+                }
             }
-        }
+        });
     }
 
     @Override
