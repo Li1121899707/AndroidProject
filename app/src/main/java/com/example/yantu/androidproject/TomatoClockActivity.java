@@ -104,7 +104,6 @@ public class TomatoClockActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startBtn.setEnabled(false);
-                stopBtn.setEnabled(true);
                 breakTimer.stop(); // ensure the break timer is stopped
                 tomatoTimer.start();
             }
@@ -121,7 +120,6 @@ public class TomatoClockActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startBtn.setEnabled(false);
-                stopBtn.setEnabled(true);
                 tomatoTimer.stop(); // ensure the tomato timer is stopped
                 breakTimer.start();
             }
@@ -137,6 +135,8 @@ public class TomatoClockActivity extends AppCompatActivity {
         exitListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                prepareResults();
+
                 finish();
             }
         };
@@ -152,7 +152,6 @@ public class TomatoClockActivity extends AppCompatActivity {
         stages++;
 
         startBtn.setEnabled(true);
-        stopBtn.setEnabled(false);
 
         startBtn.setOnClickListener(tomatoStartListener);
         stopBtn.setOnClickListener(tomatoStopListener);
@@ -165,7 +164,6 @@ public class TomatoClockActivity extends AppCompatActivity {
 
     private void changeIntoBreak() {
         startBtn.setEnabled(true);
-        stopBtn.setEnabled(false);
 
         startBtn.setOnClickListener(breakStartListener);
         stopBtn.setOnClickListener(breakStopListener);
@@ -176,18 +174,20 @@ public class TomatoClockActivity extends AppCompatActivity {
         stageTv.setText(String.format(BREAK_STAGE_FORMAT, stages, totalStage));
     }
 
-    private void changeIntoEnd() {
-        stageTv.setText(FINISH_HIT);
-
+    private void prepareResults() {
         Bundle ret = new Bundle();
         ret.putString("task", taskName);
         ret.putInt("finished_stages", stages);
 
-        updateTime(0, 0);
-
         Intent intent = new Intent();
         intent.putExtras(ret);
         setResult(MainActivity.ACTIVITY_ID, intent);
+    }
+
+    private void changeIntoEnd() {
+        stageTv.setText(FINISH_HIT);
+
+        updateTime(0, 0);
 
         stopBtn.setOnClickListener(exitListener);
     }
