@@ -117,6 +117,8 @@ public class Timer {
         executor = null;
         runCounter = null;
 
+        assert(executor == null);
+
         return true;
     }
 

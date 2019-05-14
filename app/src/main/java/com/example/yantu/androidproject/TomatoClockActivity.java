@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.yantu.androidproject.Entity.Log;
 import com.example.yantu.androidproject.Util.timer.Timer;
 import com.example.yantu.androidproject.Util.timer.TimerCallback;
 
@@ -18,8 +19,8 @@ public class TomatoClockActivity extends AppCompatActivity {
     static final private String FINISH_HIT = "所有番茄周期已完成，请退出～";
     static final private String INTERRUPT_HIT = "当前周期被打断，请退出～";
 
-    final private Timer tomatoTimer = new Timer(0, 25, 0);
-    final private Timer breakTimer = new Timer(0, 5, 0);
+    final private Timer tomatoTimer = new Timer(0, 0, 5);
+    final private Timer breakTimer = new Timer(0, 0, 5);
 
     private int stages = 0; // start from 1
     private String taskName;
@@ -85,6 +86,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         tomatoTimer.registerInterruptCallback(new TimerCallback() {
             @Override
             public void run(long hours, long minutes, long seconds) {
+                android.util.Log.i("Tomato", "Called here");
                 changeIntoInterrupt();
             }
         });
@@ -144,11 +146,8 @@ public class TomatoClockActivity extends AppCompatActivity {
         timeRemainingTv.setText(String.format(TIME_FORMAT, minutes, seconds));
     }
 
-    private void changeIntoTomato() {
+    private synchronized void changeIntoTomato() {
         stages++;
-
-        startBtn.setEnabled(true);
-        stopBtn.setEnabled(false);
 
         startBtn.setOnClickListener(tomatoStartListener);
         stopBtn.setOnClickListener(tomatoStopListener);
@@ -159,9 +158,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         stageTv.setText(String.format(TOMATO_STAGE_FORMAT, stages, totalStage));
     }
 
-    private void changeIntoBreak() {
-        startBtn.setEnabled(true);
-        stopBtn.setEnabled(false);
+    private synchronized void changeIntoBreak() {
 
         startBtn.setOnClickListener(breakStartListener);
         stopBtn.setOnClickListener(breakStopListener);
@@ -172,7 +169,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         stageTv.setText(String.format(BREAK_STAGE_FORMAT, stages, totalStage));
     }
 
-    private void changeIntoEnd() {
+    private synchronized void changeIntoEnd() {
         stageTv.setText(FINISH_HIT);
 
         Bundle ret = new Bundle();
@@ -187,7 +184,8 @@ public class TomatoClockActivity extends AppCompatActivity {
     }
 
     // MUST BE called by the interrupt event
-    private void changeIntoInterrupt() {
+    private synchronized void changeIntoInterrupt() {
+        android.util.Log.i("Tomato", "Interrupt");
         state = 2;
 
         stageTv.setText(INTERRUPT_HIT);
@@ -195,10 +193,12 @@ public class TomatoClockActivity extends AppCompatActivity {
         stopBtn.setOnClickListener(exitListener);
     }
 
-    private void changeState() {
+    private synchronized void changeState() {
         if (state == 1) {
             state = 0;
             changeIntoTomato();
+            startBtn.setEnabled(true);
+            stopBtn.setEnabled(false);
         } else if (state == 0) {
             if (stages >= totalStage) {
                 state = 2;
@@ -206,6 +206,9 @@ public class TomatoClockActivity extends AppCompatActivity {
             } else {
                 state = 1;
                 changeIntoBreak();
+
+                startBtn.setEnabled(true);
+                stopBtn.setEnabled(false);
             }
         }
     }
