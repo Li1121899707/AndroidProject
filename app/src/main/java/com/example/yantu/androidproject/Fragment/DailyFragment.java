@@ -50,7 +50,6 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
     }
 
     public void init(){
-
         // 初始化控件
         rvDaily = getActivity().findViewById(R.id.rvDaily);
         hobbyList = new ArrayList<>();
@@ -89,9 +88,9 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
     // ② 实现接口
     @Override
     public void recycleViewOnClick(View parent, int position) {
-        Toast.makeText(getContext(), "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
-        int cycle = hobbyList.get(position).getHbCycle();
+        //Toast.makeText(getContext(), "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
         // 开启番茄钟
+        handleClock(position);
     }
 
     @Override
@@ -117,4 +116,19 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
         }
     };
 
+    public void handleClock(Integer position){
+        int cycle = hobbyList.get(position).getHbCycle();
+        String name = hobbyList.get(position).getHbName();
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putInt("cycle", cycle);
+        bundle.putString("name", name);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
 }

@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int ACTIVITY_ID = 951753;
+
     private BottomNavigationView mBottomNavigationView;
     private TextView mainTitle;
     private ImageView ivAddHobby;
@@ -160,5 +162,8 @@ public class MainActivity extends AppCompatActivity {
         android.util.Log.i("result",sj.format(calendar.getTime()));
 
     }
+
+
+
 
 }
