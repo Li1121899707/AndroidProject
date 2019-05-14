@@ -24,7 +24,9 @@ import com.example.yantu.androidproject.EditHobbyActivity;
 import com.example.yantu.androidproject.Entity.Hobby;
 import com.example.yantu.androidproject.Entity.Log;
 import com.example.yantu.androidproject.HobbyDetailAvtivity;
+import com.example.yantu.androidproject.MainActivity;
 import com.example.yantu.androidproject.R;
+import com.example.yantu.androidproject.TomatoClockActivity;
 import com.example.yantu.androidproject.Util.Utils;
 
 import java.util.ArrayList;
@@ -118,13 +120,14 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
 
     public void handleClock(Integer position){
         int cycle = hobbyList.get(position).getHbCycle();
+        android.util.Log.i("result", cycle + "");
         String name = hobbyList.get(position).getHbName();
-        Intent intent = new Intent();
+        Intent intent = new Intent(getActivity(), TomatoClockActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt("cycle", cycle);
-        bundle.putString("name", name);
+        bundle.putInt("stages", cycle);
+        bundle.putString("task", name);
         intent.putExtras(bundle);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, MainActivity.ACTIVITY_ID);
     }
 
     @Override

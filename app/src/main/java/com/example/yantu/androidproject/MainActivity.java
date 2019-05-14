@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int ACTIVITY_ID = 951753;
+    public static final int ACTIVITY_ID = 9;
 
     private BottomNavigationView mBottomNavigationView;
     private TextView mainTitle;

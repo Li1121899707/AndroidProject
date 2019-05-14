@@ -168,7 +168,7 @@ public class TomatoClockActivity extends AppCompatActivity {
 
         totalTime = 5 * 3600;
 
-        updateTime(55, 0);
+        updateTime(5, 0);
         stageTv.setText(String.format(BREAK_STAGE_FORMAT, stages, totalStage));
     }
 
@@ -176,7 +176,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         stageTv.setText(FINISH_HIT);
 
         Bundle ret = new Bundle();
-        ret.putString("task_name", taskName);
+        ret.putString("task", taskName);
         ret.putInt("finished_stages", stages);
 
         Intent intent = new Intent();
