@@ -112,8 +112,10 @@ public class TomatoClockActivity extends AppCompatActivity {
         tomatoStopListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!tomatoTimer.stop())
+                if (!tomatoTimer.stop()) {
+                    prepareResults();
                     finish();
+                }
             }
         };
 
@@ -129,8 +131,10 @@ public class TomatoClockActivity extends AppCompatActivity {
         breakStopListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!breakTimer.stop())
+                if (!breakTimer.stop()) {
+                    prepareResults();
                     finish();
+                }
             }
         };
 
