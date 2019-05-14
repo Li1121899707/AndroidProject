@@ -201,7 +201,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
     public AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(EditHobbyActivity.this, spinnerItems[position], Toast.LENGTH_SHORT).show();
+            //Toast.makeText(EditHobbyActivity.this, spinnerItems[position], Toast.LENGTH_SHORT).show();
             spinnerPosition = position;
         }
 
@@ -243,7 +243,7 @@ public class EditHobbyActivity extends AppCompatActivity implements
     // EditRecycleAdapter（图片列表）点击事件，实现EditRecycleAdapter类中的抽象方法
     @Override
     public void editImageViewOnClick(ImageView parent, int position) {
-        Toast.makeText(this, "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
         iconPosition = position;
         String uriStr = "android.resource://com.example.yantu.androidproject/drawable/" + iconList.get(position);
         selectedIcon.setImageURI(Uri.parse(uriStr));

@@ -27,7 +27,7 @@ public class AlarmUtil {
         // 如果有两个通知，FLAG_CANCEL_CURRENT会令第一个失效，显示第二个。FLAG_UPDATE_CURRENT会覆盖第一个。
         PendingIntent sender = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         am.set(AlarmManager.RTC_WAKEUP, timeInMillis, sender);
-        android.util.Log.i("result", "startAlarm");
+        android.util.Log.i("alarm", "startAlarm " + action);
     }
 
     // 销毁Alarm
@@ -37,12 +37,11 @@ public class AlarmUtil {
         PendingIntent sender = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(sender);
-        android.util.Log.i("result", "closeAlarm" + requestCode);
+        android.util.Log.i("alarm", "closeAlarm" + requestCode);
     }
 
     public void openAlarm(Context context, int alarmChoice) {
         Calendar currCalendar = Calendar.getInstance();
-        android.util.Log.i("result", "alarmchoice" + alarmChoice);
         if(alarmChoice == 4 || alarmChoice == 1){
             Calendar calendarMorning = Calendar.getInstance();
             calendarMorning.set(Calendar.HOUR_OF_DAY, 7);
@@ -53,9 +52,10 @@ public class AlarmUtil {
             // 如果alarmChoice不为4，说明闹钟刚刚响过，应该定义新一天的闹钟。
             if(currCalendar.compareTo(calendarMorning) > 0 || alarmChoice == 1){
                 calendarMorning.add(Calendar.DATE, 1);
+                android.util.Log.i("alarm", "早上 增加一天");
             }
             setAlarmTime(context, calendarMorning.getTimeInMillis(), "1", 1);
-            android.util.Log.i("result", "morning");
+            android.util.Log.i("alarm", "morning");
         }
         if(alarmChoice == 4 || alarmChoice == 2){
             Calendar calendarAfternoon = Calendar.getInstance();
@@ -65,9 +65,11 @@ public class AlarmUtil {
 
             if(currCalendar.compareTo(calendarAfternoon) > 0 || alarmChoice == 2){
                 calendarAfternoon.add(Calendar.DATE, 1);
+                android.util.Log.i("alarm", "下午 增加一天");
+
             }
             setAlarmTime(context, calendarAfternoon.getTimeInMillis(), "2", 2);
-            android.util.Log.i("result", "afternoon");
+            android.util.Log.i("alarm", "afternoon");
         }
         if(alarmChoice == 4 || alarmChoice == 3){
             Calendar calendarNoon = Calendar.getInstance();
@@ -77,9 +79,10 @@ public class AlarmUtil {
 
             if(currCalendar.compareTo(calendarNoon) > 0 || alarmChoice == 3){
                 calendarNoon.add(Calendar.DATE, 1);
+                android.util.Log.i("alarm", "晚上 增加一天");
             }
             setAlarmTime(context, calendarNoon.getTimeInMillis(), "3",  3);
-            android.util.Log.i("result", "noon");
+            android.util.Log.i("alarm", "noon");
         }
         if(alarmChoice == 0){
             Toast.makeText(context, "无法开启通知！",Toast.LENGTH_SHORT).show();

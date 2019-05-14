@@ -41,8 +41,6 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
 
     private RecyclerView rvDaily;
     private List<Hobby> hobbyList;
-    Boolean up = false;//默认false不刷新
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -92,6 +90,8 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
     @Override
     public void recycleViewOnClick(View parent, int position) {
         Toast.makeText(getContext(), "点击了第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
+        int cycle = hobbyList.get(position).getHbCycle();
+        // 开启番茄钟
     }
 
     @Override
@@ -102,24 +102,6 @@ public class DailyFragment extends Fragment implements DailyRecycleAdapter.Daily
         startActivity(intent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Objects.requireNonNull(getActivity()).finish();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        up = true;//不可见的时候将刷新开启
-        android.util.Log.i("result","Daily 暂停");
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        android.util.Log.i("result","Daily 刷新");
-        if (up) {
-            //（方法）;//向服务器发送请求
-            up = false;//刷新一次即可，不需要一直刷新
         }
     }
 
