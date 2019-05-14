@@ -45,11 +45,10 @@
             android:id="@+id/remainingProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:progressDrawable="@drawable/progress_bar_style"
-            android:progress="40"
+            android:layout_height="wrap_content"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_height="wrap_content" />
+            android:progressDrawable="@drawable/progress_bar_style" />
 
         <TextView
             android:id="@+id/taskNameTextView"
