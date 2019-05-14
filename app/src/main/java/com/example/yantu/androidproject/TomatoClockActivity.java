@@ -72,6 +72,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         tomatoTimer.registerPostCallback(new TimerCallback() {
             @Override
             public void run(long hours, long minutes, long seconds) {
+                updateTime(0, 0);
                 changeState();
             }
         });
@@ -79,6 +80,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         breakTimer.registerPostCallback(new TimerCallback() {
             @Override
             public void run(long hours, long minutes, long seconds) {
+                updateTime(0, 0);
                 changeState();
             }
         });
@@ -140,7 +142,7 @@ public class TomatoClockActivity extends AppCompatActivity {
     }
 
     private void updateTime(long minutes, long seconds) {
-        long progress = (totalTime - (minutes * 60 + seconds)) / totalTime;
+        long progress = 100 * (totalTime - (minutes * 60 + seconds)) / totalTime;
         progressBar.setProgress((int) progress);
         timeRemainingTv.setText(String.format(TIME_FORMAT, minutes, seconds));
     }
@@ -155,8 +157,8 @@ public class TomatoClockActivity extends AppCompatActivity {
         stopBtn.setOnClickListener(tomatoStopListener);
 
         totalTime = 25 * 3600;
+        timeRemainingTv.setText(String.format(TIME_FORMAT, 25, 0));
 
-        updateTime(25, 0);
         stageTv.setText(String.format(TOMATO_STAGE_FORMAT, stages, totalStage));
     }
 
@@ -168,8 +170,8 @@ public class TomatoClockActivity extends AppCompatActivity {
         stopBtn.setOnClickListener(breakStopListener);
 
         totalTime = 5 * 3600;
+        timeRemainingTv.setText(String.format(TIME_FORMAT, 5, 0));
 
-        updateTime(5, 0);
         stageTv.setText(String.format(BREAK_STAGE_FORMAT, stages, totalStage));
     }
 
@@ -179,6 +181,8 @@ public class TomatoClockActivity extends AppCompatActivity {
         Bundle ret = new Bundle();
         ret.putString("task", taskName);
         ret.putInt("finished_stages", stages);
+
+        updateTime(0, 0);
 
         Intent intent = new Intent();
         intent.putExtras(ret);
