@@ -152,5 +152,16 @@ public class Timer {
      */
     public void resetCallbacks() {
         callbacks.clear();
+        postCallback = null;
+        interruptCallback = null;
+    }
+
+    /**
+     * Check if the timer is running
+     *
+     * @return if the timer is running
+     */
+    public boolean isRunning() {
+        return executor != null;
     }
 }

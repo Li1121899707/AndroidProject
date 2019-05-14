@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/icon_main"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".TomatoClockActivity"></activity>
         <activity android:name=".LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +25,9 @@
                 <action android:name="intent_alarm_log" />
             </intent-filter>
         </receiver>
+
         <activity android:name=".MainActivity" />
-        <activity android:name=".popAddActivity"></activity>
+        <activity android:name=".popAddActivity" />
     </application>
 
 </manifest>

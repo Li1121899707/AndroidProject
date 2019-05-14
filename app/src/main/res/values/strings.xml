@@ -4,7 +4,10 @@
     <string name="title_home">今日习惯</string>
     <string name="title_dashboard">日常习惯</string>
     <string name="title_notifications">设置</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="count_down_title">番茄钟</string>
+    <string name="count_down_stop_button">退出</string>
+    <string name="count_down_start_button">开始</string>
+    <string name="count_down_task_default">任务名</string>
+    <string name="count_down_stage_default">阶段名</string>
+    <string name="count_down_default_time">23:59</string>
 </resources>
