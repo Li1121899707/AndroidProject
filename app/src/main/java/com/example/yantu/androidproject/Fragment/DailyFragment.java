@@ -1,8 +1,6 @@
 package com.example.yantu.androidproject.Fragment;
 /*侯禹驰*/
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,14 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.yantu.androidproject.Adapter.DailyRecycleAdapter;
 import com.example.yantu.androidproject.DBHelper.MyDB;
-import com.example.yantu.androidproject.DBHelper.MyDatabaseHelper;
 import com.example.yantu.androidproject.EditHobbyActivity;
 import com.example.yantu.androidproject.Entity.Hobby;
-import com.example.yantu.androidproject.Entity.Log;
 import com.example.yantu.androidproject.HobbyDetailAvtivity;
 import com.example.yantu.androidproject.MainActivity;
 import com.example.yantu.androidproject.R;

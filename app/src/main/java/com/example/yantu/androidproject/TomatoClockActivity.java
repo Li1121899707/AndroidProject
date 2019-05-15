@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.yantu.androidproject.Util.Utils;
 import com.example.yantu.androidproject.Util.timer.Timer;
 import com.example.yantu.androidproject.Util.timer.TimerCallback;
 
@@ -247,7 +248,8 @@ public class TomatoClockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tomato_clock);
-
+        // 标题栏沉浸
+        Utils.setStatusBar(this, false, false);
         init();
         changeState();
     }
