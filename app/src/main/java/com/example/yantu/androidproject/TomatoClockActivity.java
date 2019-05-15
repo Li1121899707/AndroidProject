@@ -81,6 +81,7 @@ public class TomatoClockActivity extends AppCompatActivity {
             @Override
             public void run(long hours, long minutes, long seconds) {
                 updateTime(0, 0);
+                makeVibration();
                 changeState();
             }
         });
@@ -89,6 +90,7 @@ public class TomatoClockActivity extends AppCompatActivity {
             @Override
             public void run(long hours, long minutes, long seconds) {
                 updateTime(0, 0);
+                makeVibration();
                 changeState();
             }
         });
@@ -168,7 +170,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         startBtn.setOnClickListener(tomatoStartListener);
         stopBtn.setOnClickListener(tomatoStopListener);
 
-        totalTime = 25 * 3600;
+        totalTime = 25 * 60;
         timeRemainingTv.setText(String.format(TIME_FORMAT, 25, 0));
 
         stageTv.setText(String.format(TOMATO_STAGE_FORMAT, stages, totalStage));
@@ -180,7 +182,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         startBtn.setOnClickListener(breakStartListener);
         stopBtn.setOnClickListener(breakStopListener);
 
-        totalTime = 5 * 3600;
+        totalTime = 5 * 60;
         timeRemainingTv.setText(String.format(TIME_FORMAT, 5, 0));
 
         stageTv.setText(String.format(BREAK_STAGE_FORMAT, stages, totalStage));
@@ -218,7 +220,6 @@ public class TomatoClockActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (state == 1) {
-                    makeVibration();
                     state = 0;
                     changeIntoTomato();
                 } else if (state == 0) {
@@ -226,7 +227,6 @@ public class TomatoClockActivity extends AppCompatActivity {
                         state = 2;
                         changeIntoEnd();
                     } else {
-                        makeVibration();
                         state = 1;
                         changeIntoBreak();
                     }
