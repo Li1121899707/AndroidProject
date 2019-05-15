@@ -1,14 +1,18 @@
 package com.example.yantu.androidproject;
 
+import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.yantu.androidproject.Entity.Log;
 import com.example.yantu.androidproject.Util.timer.Timer;
 import com.example.yantu.androidproject.Util.timer.TimerCallback;
 
@@ -19,13 +23,15 @@ public class TomatoClockActivity extends AppCompatActivity {
     static final private String FINISH_HIT = "所有番茄周期已完成，请退出～";
     static final private String INTERRUPT_HIT = "当前周期被打断，请退出～";
 
-    final private Timer tomatoTimer = new Timer(0, 0, 5);
-    final private Timer breakTimer = new Timer(0, 0, 5);
+    final private Timer tomatoTimer = new Timer(0, 25, 0);
+    final private Timer breakTimer = new Timer(0, 5, 0);
 
     private int stages = 0; // start from 1
     private String taskName;
     private int totalStage;
     private int totalTime;
+
+    private Vibrator vibrator;
 
     // tomato states
     // 0 -> tomato
@@ -45,6 +51,8 @@ public class TomatoClockActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         taskName = bundle.getString("task");
         totalStage = bundle.getInt("stages");
+
+        vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
 
         startBtn = findViewById(R.id.startButton);
         stopBtn = findViewById(R.id.stopButton);
@@ -72,6 +80,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         tomatoTimer.registerPostCallback(new TimerCallback() {
             @Override
             public void run(long hours, long minutes, long seconds) {
+                updateTime(0, 0);
                 changeState();
             }
         });
@@ -79,6 +88,7 @@ public class TomatoClockActivity extends AppCompatActivity {
         breakTimer.registerPostCallback(new TimerCallback() {
             @Override
             public void run(long hours, long minutes, long seconds) {
+                updateTime(0, 0);
                 changeState();
             }
         });
@@ -86,7 +96,6 @@ public class TomatoClockActivity extends AppCompatActivity {
         tomatoTimer.registerInterruptCallback(new TimerCallback() {
             @Override
             public void run(long hours, long minutes, long seconds) {
-                android.util.Log.i("Tomato", "Called here");
                 changeIntoInterrupt();
             }
         });
@@ -102,7 +111,6 @@ public class TomatoClockActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startBtn.setEnabled(false);
-                stopBtn.setEnabled(true);
                 breakTimer.stop(); // ensure the break timer is stopped
                 tomatoTimer.start();
             }
@@ -111,7 +119,10 @@ public class TomatoClockActivity extends AppCompatActivity {
         tomatoStopListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tomatoTimer.stop();
+                if (!tomatoTimer.stop()) {
+                    prepareResults();
+                    finish();
+                }
             }
         };
 
@@ -119,7 +130,6 @@ public class TomatoClockActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startBtn.setEnabled(false);
-                stopBtn.setEnabled(true);
                 tomatoTimer.stop(); // ensure the tomato timer is stopped
                 breakTimer.start();
             }
@@ -128,50 +138,55 @@ public class TomatoClockActivity extends AppCompatActivity {
         breakStopListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                breakTimer.stop();
+                if (!breakTimer.stop()) {
+                    prepareResults();
+                    finish();
+                }
             }
         };
 
         exitListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                prepareResults();
                 finish();
             }
         };
     }
 
     private void updateTime(long minutes, long seconds) {
-        long progress = (totalTime - (minutes * 60 + seconds)) / totalTime;
+        long progress = 100 * (totalTime - (minutes * 60 + seconds)) / totalTime;
         progressBar.setProgress((int) progress);
         timeRemainingTv.setText(String.format(TIME_FORMAT, minutes, seconds));
     }
 
-    private synchronized void changeIntoTomato() {
+    private void changeIntoTomato() {
         stages++;
+
+        startBtn.setEnabled(true);
 
         startBtn.setOnClickListener(tomatoStartListener);
         stopBtn.setOnClickListener(tomatoStopListener);
 
         totalTime = 25 * 3600;
+        timeRemainingTv.setText(String.format(TIME_FORMAT, 25, 0));
 
-        updateTime(25, 0);
         stageTv.setText(String.format(TOMATO_STAGE_FORMAT, stages, totalStage));
     }
 
-    private synchronized void changeIntoBreak() {
+    private void changeIntoBreak() {
+        startBtn.setEnabled(true);
 
         startBtn.setOnClickListener(breakStartListener);
         stopBtn.setOnClickListener(breakStopListener);
 
         totalTime = 5 * 3600;
+        timeRemainingTv.setText(String.format(TIME_FORMAT, 5, 0));
 
-        updateTime(5, 0);
         stageTv.setText(String.format(BREAK_STAGE_FORMAT, stages, totalStage));
     }
 
-    private synchronized void changeIntoEnd() {
-        stageTv.setText(FINISH_HIT);
-
+    private void prepareResults() {
         Bundle ret = new Bundle();
         ret.putString("task", taskName);
         ret.putInt("finished_stages", stages);
@@ -179,13 +194,18 @@ public class TomatoClockActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtras(ret);
         setResult(MainActivity.ACTIVITY_ID, intent);
+    }
+
+    private void changeIntoEnd() {
+        stageTv.setText(FINISH_HIT);
+
+        updateTime(0, 0);
 
         stopBtn.setOnClickListener(exitListener);
     }
 
     // MUST BE called by the interrupt event
-    private synchronized void changeIntoInterrupt() {
-        android.util.Log.i("Tomato", "Interrupt");
+    private void changeIntoInterrupt() {
         state = 2;
 
         stageTv.setText(INTERRUPT_HIT);
@@ -193,23 +213,33 @@ public class TomatoClockActivity extends AppCompatActivity {
         stopBtn.setOnClickListener(exitListener);
     }
 
-    private synchronized void changeState() {
-        if (state == 1) {
-            state = 0;
-            changeIntoTomato();
-            startBtn.setEnabled(true);
-            stopBtn.setEnabled(false);
-        } else if (state == 0) {
-            if (stages >= totalStage) {
-                state = 2;
-                changeIntoEnd();
-            } else {
-                state = 1;
-                changeIntoBreak();
-
-                startBtn.setEnabled(true);
-                stopBtn.setEnabled(false);
+    private void changeState() {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (state == 1) {
+                    makeVibration();
+                    state = 0;
+                    changeIntoTomato();
+                } else if (state == 0) {
+                    if (stages >= totalStage) {
+                        state = 2;
+                        changeIntoEnd();
+                    } else {
+                        makeVibration();
+                        state = 1;
+                        changeIntoBreak();
+                    }
+                }
             }
+        });
+    }
+
+    private void makeVibration() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(200);
         }
     }
 
@@ -220,5 +250,12 @@ public class TomatoClockActivity extends AppCompatActivity {
 
         init();
         changeState();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+            return true;
+        return super.onKeyDown(keyCode, event);
     }
 }
