@@ -1,7 +1,10 @@
 package com.example.yantu.androidproject;
 
-import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -28,6 +31,8 @@ public class TomatoClockActivity extends AppCompatActivity {
     private int totalStage;
     private int totalTime;
 
+    private Vibrator vibrator;
+
     // tomato states
     // 0 -> tomato
     // 1 -> break
@@ -46,6 +51,8 @@ public class TomatoClockActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         taskName = bundle.getString("task");
         totalStage = bundle.getInt("stages");
+
+        vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
 
         startBtn = findViewById(R.id.startButton);
         stopBtn = findViewById(R.id.stopButton);
@@ -211,6 +218,7 @@ public class TomatoClockActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (state == 1) {
+                    makeVibration();
                     state = 0;
                     changeIntoTomato();
                 } else if (state == 0) {
@@ -218,12 +226,21 @@ public class TomatoClockActivity extends AppCompatActivity {
                         state = 2;
                         changeIntoEnd();
                     } else {
+                        makeVibration();
                         state = 1;
                         changeIntoBreak();
                     }
                 }
             }
         });
+    }
+
+    private void makeVibration() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(200);
+        }
     }
 
     @Override
