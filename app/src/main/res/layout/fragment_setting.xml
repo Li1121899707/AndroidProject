@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="每天的8点、14点、20点会提醒你完成习惯"
+                android:text="每天接近8点、14点、20点会提醒你完成习惯"
                 android:textSize="14sp" />
         </LinearLayout>
 

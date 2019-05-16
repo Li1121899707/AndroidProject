@@ -140,6 +140,17 @@ public class EditHobbyActivity extends AppCompatActivity implements
             }
 
             try {
+                String newString = new String(name.getBytes("GB2312"), "ISO-8859-1");
+                Log.i("result", newString.length() + ""); // 真实长度，一个汉字是两个字符
+                if(newString.length() > 20){
+                    Toast.makeText(EditHobbyActivity.this, "您输入的名称过长，请精简名称！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
                 hbCycle = Integer.valueOf(hbCycleStr);
             } catch (Exception e) {
                 Toast.makeText(EditHobbyActivity.this, "您输入的番茄钟周期不是数字！", Toast.LENGTH_SHORT).show();

@@ -27,6 +27,7 @@
             android:paddingTop="3dp"
             android:text="功能"
             android:textSize="15dp"
+            android:maxLines="2"
             android:textAlignment="center"/>
     </LinearLayout>
 </LinearLayout>
