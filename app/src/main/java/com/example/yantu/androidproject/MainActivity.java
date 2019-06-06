@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public void init() {
         mainTitle = findViewById(R.id.mainTitle);
         ivAddHobby = findViewById(R.id.ivAddHobby);
@@ -76,9 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setFragmentPosition(int position) {
-        // 先取消，否则无限循环。不取消执行setSelectedItemId相当于执行了一遍监听事件
         changeTopBar(position);
-        dropListener();
+        dropListener(); // 防止无限递归
         if(position == 0)
             mBottomNavigationView.setSelectedItemId(R.id.navigation_home);
         else if(position == 1)
@@ -147,23 +147,5 @@ public class MainActivity extends AppCompatActivity {
             ivAddHobby.setVisibility(View.INVISIBLE);
         }
     }
-
-    public void getTime() throws ParseException {
-        SimpleDateFormat sj = new SimpleDateFormat("yyyy-MM-dd");
-        String today = "2015-11-30";
-        Date d = sj.parse(today);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(d);
-        calendar.add(Calendar.DATE, 1);
-        android.util.Log.i("result", sj.format(calendar.getTime()));
-        //此时日期变为2015-12-01 ，所以下面的-2，
-        //理论上讲应该是2015-11-29
-        calendar.add(calendar.DATE, -2);
-        android.util.Log.i("result",sj.format(calendar.getTime()));
-
-    }
-
-
-
 
 }
